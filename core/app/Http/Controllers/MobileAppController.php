@@ -12,6 +12,7 @@ use App\Patient;
 use App\Prescription;
 use App\PrescriptionImage;
 use App\Sector;
+use App\PostsModel;
 use App\Users;
 use App\ScheduledAppointments;
 use App\PushNotificationsTokenModel;
@@ -704,6 +705,16 @@ public function AgoraTokenGeneration(Request $request)
 
     $token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $channelName, $uid, $role, $privilegeExpiredTs);
     return $token;
+}
+public function getLibraryPost(Request $request)
+{
+
+    $appointments = PostsModel::where('posts.status',1)
+    ->join('sectors','sectors.id','posts.category')
+    ->select('posts.*','sectors.name','sectors.details','sectors.image')
+    ->get();
+   return response()->json($appointments);
+
 }
 
 

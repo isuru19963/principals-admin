@@ -43,7 +43,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"> @lang('Add New Sector')</h5>
+                <h5 class="modal-title"> @lang('Add New Category')</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -52,8 +52,8 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>@lang('Sector Name')</label>
-                        <input type="text"class="form-control" placeholder="@lang('Example : Dental')" name="name" required>
+                        <label>@lang('Category Name')</label>
+                        <input type="text"class="form-control" placeholder="@lang('Example : Category')" name="name" required>
                     </div>
                     <div class="form-group">
                         <label>@lang('Details')</label>
@@ -61,7 +61,7 @@
                         <textarea name="details" class="form-control" rows="5" required></textarea>
                     </div>
                     <div class="form-group">
-                        <b>@lang('Sector Image')</b>
+                        <b>@lang('Category Image')</b>
                         <div class="image-upload mt-2">
                             <div class="thumb">
                                 <div class="avatar-preview">
@@ -154,7 +154,7 @@
 
     (function ($) {
         'use strict';
-        
+
         $('.addBtn').on('click', function () {
             var modal = $('#addModal');
             modal.modal('show');

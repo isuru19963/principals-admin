@@ -22,7 +22,8 @@ Route::post('accounts/push_token', 'MobileAppController@SaveDeviceToken');
 Route::post('appointments/GetAppoinmentsByCoach', 'MobileAppController@getAppointmenDetailsByPatientId');
 Route::post('appointments/GetAppoinmentsByPrincipal', 'MobileAppController@getAppointmenDetailsByPrincipal');
 Route::post('agora/AgoraTokenGeneration', 'MobileAppController@AgoraTokenGeneration');
-
+Route::post('library/GetCategories', 'MobileAppController@getCategories');
+Route::post('library/GetLibraryPost', 'MobileAppController@getLibraryPost');
 
 
 

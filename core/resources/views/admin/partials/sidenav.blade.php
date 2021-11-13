@@ -21,12 +21,12 @@
                     </a>
                 </li>
 
-                {{-- <li class="sidebar-menu-item {{menuActive('admin.sector*')}}">
+                <li class="sidebar-menu-item {{menuActive('admin.sector*')}}">
                     <a href="{{route('admin.sector')}}" class="nav-link ">
                         <i class=" menu-icon fas fa-stethoscope"></i>
                         <span class="menu-title">@lang('Manage Sectors')</span>
                     </a>
-                </li> --}}
+                </li>
 
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.doctors*',3)}}">

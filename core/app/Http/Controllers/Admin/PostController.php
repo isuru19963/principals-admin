@@ -15,6 +15,7 @@ use App\DoctorAssistantTrack;
 use App\DrArticles;
 use App\DrYotube;
 use App\Gallery;
+use App\PostsModel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,8 @@ class PostController extends Controller
 public function postsAll(){
     $page_title = 'Manage Articles';
         $empty_message = 'No post found';
-        $doctors = Doctor::latest()->paginate(getPaginate());
-        return view('admin.Posts.all_posts', compact('page_title', 'empty_message', 'doctors'));
+        $articles = PostsModel::latest()->paginate(getPaginate());
+        return view('admin.Posts.all_posts', compact('page_title', 'empty_message', 'articles'));
 }
 public function uploadPostsImage(Request $request)
 {
