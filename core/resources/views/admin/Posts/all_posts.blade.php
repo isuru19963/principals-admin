@@ -14,7 +14,7 @@
                                 <th scope="col">@lang('Id')</th>
                                 <th scope="col">@lang('Article Image')</th>
                                 <th scope="col">@lang('Title')</th>
-                                <th scope="col">@lang('Catgory')</th>
+                                <th scope="col">@lang('Category')</th>
                                 <th scope="col">@lang('Author')</th>
                                 <th scope="col">@lang('Posts Live')</th>
                                 <th scope="col">@lang('Created Date')</th>
@@ -28,11 +28,11 @@
                                     <td data-label="@lang('article')">
                                         <div class="user">
                                             <div><img src="{{asset('assets/posts/'.$article->post_image )}}" height="100px" width="100px" alt="tag"></div>
-                                            <span class="name">{{$article->name}}</span>
+                                            <!-- <span class="name">{{$article->name}}</span> -->
                                         </div>
                                     </td>
-                                    <td data-label="@lang('Username')"><a href="{{ route('admin.doctors.detail', $article->id) }}">{{ $article->title  }}</a></td>
-                                    <td data-label="@lang('Email')">{{ $article->category }}</td>
+                                    <td data-label="@lang('Username')"><a href="{{ route('admin.posts.detail', $article->id) }}">{{ $article->title  }}</a></td>
+                                    <td data-label="@lang('Email')">{{ $article->name }}</td>
                                     <td data-label="@lang('Total Earn')">{{ $article->author_name }}</td>
                                     <td data-label="@lang('Joined At')">{{ showDateTime($article->created_at) }}</td>
                                     <td data-label="@lang('Featured')">
@@ -43,7 +43,7 @@
                                         @endif
                                     </td>
                                     <td data-label="@lang('Action')">
-                                        <a href="{{ route('admin.doctors.detail', $article->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">
+                                        <a href="{{ route('admin.posts.detail', $article->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">
                                             <i class="las la-desktop text--shadow"></i>
                                         </a>
                                     </td>

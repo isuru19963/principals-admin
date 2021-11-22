@@ -19,11 +19,33 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('accounts/authenticate', 'MobileAppController@loginAccount');
 Route::post('accounts/push_token', 'MobileAppController@SaveDeviceToken');
-Route::post('appointments/GetAppoinmentsByCoach', 'MobileAppController@getAppointmenDetailsByPatientId');
+Route::post('accounts/GetUserDetails', 'MobileAppController@getUserDetails');
+Route::post('appointments/GetAppoinmentsByCoach', 'MobileAppController@getAppointmenDetailsByCoach');
 Route::post('appointments/GetAppoinmentsByPrincipal', 'MobileAppController@getAppointmenDetailsByPrincipal');
+Route::post('appointments/GetAppoinmentsByApptCodePrincipals', 'MobileAppController@getAppointmenDetailsByPrincipalApptCode');
+Route::post('appointments/GetAppoinmentsByApptCodeCoach', 'MobileAppController@getAppointmenDetailsByCoachApptCode');
+Route::post('appointments/CoachScheduleManage', 'MobileAppController@scheduleManage');
+Route::post('appointments/GetCoachAvailabilityList', 'MobileAppController@getCoachAvailabilityList');
+Route::post('appointments/GetAppointmentTimeSlots', 'MobileAppController@getAppointmentTimeSlots');
+Route::post('appointments/GetCoachList', 'MobileAppController@getCoachList');
+
 Route::post('agora/AgoraTokenGeneration', 'MobileAppController@AgoraTokenGeneration');
 Route::post('library/GetCategories', 'MobileAppController@getCategories');
 Route::post('library/GetLibraryPost', 'MobileAppController@getLibraryPost');
+Route::post('library/GetLibraryPostByID', 'MobileAppController@getLibraryPostByID');
+Route::post('library/GetLibraryPostBySearch', 'MobileAppController@getLibraryPostBySearch');
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,7 +55,7 @@ Route::post('getDoctors', 'MobileAppController@getDoctors');
 Route::post('getPrescriptionByPatient', 'MobileAppController@getPrescriptionByPatient');
 Route::post('getPrescriptionImageById', 'MobileAppController@getPrescriptionImageById');
 Route::post('getDoctorsByCat', 'MobileAppController@getDoctorsByCat');
-Route::post('getAppointmentTimeSlots', 'MobileAppController@getAppointmentTimeSlots');
+
 Route::post('appointmentStore', 'MobileAppController@appointmentStore');
 Route::post('GetAppointmenDetailsByPatientId', 'MobileAppController@getAppointmenDetailsByPatientId');
 Route::post('getArticlesByDocId', 'MobileAppController@getArticlesByDocId');

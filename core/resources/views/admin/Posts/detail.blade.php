@@ -1,12 +1,37 @@
 @extends('admin.layouts.app')
-@php
 
-@endphp
 @section('panel')
-    <div class="row">
+    <!-- <div class="row mb-none-30">
+        <div class="col-xl-3 col-lg-5 col-md-5 mb-30">
+          
+            <
+
+            {{-- <div class="card b-radius--10 overflow-hidden mt-30 box--shadow1">
+                <div class="card-body">
+                    <h5 class="mb-20 text-muted">@lang('Doctor action')</h5>
+                    <a href="{{ route('admin.doctors.login.history.single', $doctor->id) }}"
+                       class="btn btn--primary btn--shadow btn-block btn-lg">
+                       @lang('Login Logs')
+                    </a>
+                    <a href="{{route('admin.doctors.email.single',$doctor->id)}}"
+                       class="btn btn--danger btn--shadow btn-block btn-lg">
+                        @lang('Send Email')
+                    </a>
+                </div>
+            </div> --}}
+        </div> -->
+
+
+
         <div class="col-lg-12">
-            <div class="card">
-                <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
+
+
+
+            <div class="card ">
+                <div class="card-body">
+                    
+
+                    <form action="{{ route('admin.posts.update',$article->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="form-row">
@@ -14,19 +39,19 @@
                             <div class="col-md-12">
                                 <div class="form-group col-md-12">
                                     <label class="font-weight-bold">@lang('Post Title') <span class="text-danger">*</span></label>
-                                    <textarea name="title" id="title" class="form-control"  rows="2"></textarea>
+                                    <textarea  name="title" id="title" class="form-control"  rows="2">{{$article->title}}</textarea>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="font-weight-bold">@lang('Description') <span class="text-danger">*</span></label>
-                                    <textarea name="description" rows="10" class="form-control nicEdit" placeholder="@lang('Your message')"></textarea>
+                                    <textarea  name="description" rows="10" class="form-control nicEdit" placeholder="@lang('Your message')">{{$article->description}}</textarea>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="font-weight-bold">@lang('Author Name')</label>
-                                    <textarea name="author_name" id="author_name" class="form-control"  rows="2"></textarea>
+                                    <textarea  name="author_name" id="author_name" class="form-control"  rows="2">{{$article->author_name}}</textarea>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="font-weight-bold">@lang('Author Description')</label>
-                                    <textarea name="author_description" id="uithor_description" class="form-control"  rows="2"></textarea>
+                                    <textarea  name="author_description" id="uithor_description" class="form-control"  rows="2">{{$article->author_name}}</textarea>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="text-muted">@lang('Category')</label>
@@ -44,7 +69,7 @@
                                             <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Yes')" data-off="@lang('No')" name="status" @if($general->sv) checked @endif>
                                         </div>
                                     </div>
-                                <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6">
                                     <label class="text-muted">@lang('Vimeo Video')</label>
                                     <br>
                                     <select name="vimeo_url"  required>
@@ -89,13 +114,20 @@
                         <button type="submit" class="btn btn--primary btn-block">@lang('Submit')</button>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>
 @endsection
 
-@push('breadcrumb-plugins')
-    <a href="{{ route('admin.posts.all') }}" class="btn btn-sm btn--primary box--shadow1 text--small"><i class="la la-fw la-backward"></i> @lang('Go Back') </a>
+@push('script')
+<script>
+    'use strict';
+
+    (function ($) {
+        $('select[name=category]').val("{{$article->category}}");
+        $('select[name=vimeo_url]').val("{{$article->video_url}}");
+    })(jQuery);
+</script>
+
 @endpush
-
-

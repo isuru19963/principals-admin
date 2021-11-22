@@ -34,49 +34,16 @@ Route::get('/getDownload/{id}', 'SiteController@getDownload')->name('book.downlo
 // Route::get('/paymentresponse', function () {
 //     return view('payments.data_sending');
 // });
- Route::post('/paymentresponse', 'MobileAppController@visa_master_payment_done')->name('payment.done');
-
-Route::namespace('Gateway')->prefix('ipn')->name('ipn.')->group(function () {
-    Route::post('paypal', 'paypal\ProcessController@ipn')->name('paypal');
-    Route::get('paypal_sdk', 'paypal_sdk\ProcessController@ipn')->name('paypal_sdk');
-    Route::post('perfect_money', 'perfect_money\ProcessController@ipn')->name('perfect_money');
-    Route::post('stripe', 'stripe\ProcessController@ipn')->name('stripe');
-    Route::post('stripe_js', 'stripe_js\ProcessController@ipn')->name('stripe_js');
-    Route::post('stripe_v3', 'stripe_v3\ProcessController@ipn')->name('stripe_v3');
-    Route::post('skrill', 'skrill\ProcessController@ipn')->name('skrill');
-    Route::post('paytm', 'paytm\ProcessController@ipn')->name('paytm');
-    Route::post('payeer', 'payeer\ProcessController@ipn')->name('payeer');
-    Route::post('paystack', 'paystack\ProcessController@ipn')->name('paystack');
-    Route::post('voguepay', 'voguepay\ProcessController@ipn')->name('voguepay');
-    Route::get('flutterwave/{trx}/{type}', 'flutterwave\ProcessController@ipn')->name('flutterwave');
-    Route::post('razorpay', 'razorpay\ProcessController@ipn')->name('razorpay');
-    Route::post('instamojo', 'instamojo\ProcessController@ipn')->name('instamojo');
-    Route::get('blockchain', 'blockchain\ProcessController@ipn')->name('blockchain');
-    Route::get('blockio', 'blockio\ProcessController@ipn')->name('blockio');
-    Route::post('coinpayments', 'coinpayments\ProcessController@ipn')->name('coinpayments');
-    Route::post('coinpayments_fiat', 'coinpayments_fiat\ProcessController@ipn')->name('coinpayments_fiat');
-    Route::post('coingate', 'coingate\ProcessController@ipn')->name('coingate');
-    Route::post('coinbase_commerce', 'coinbase_commerce\ProcessController@ipn')->name('coinbase_commerce');
-    Route::get('mollie', 'mollie\ProcessController@ipn')->name('mollie');
-    Route::post('cashmaal', 'cashmaal\ProcessController@ipn')->name('cashmaal');
-});
-
-// User Support Ticket
-Route::prefix('ticket')->group(function () {
-    Route::get('/', 'TicketController@supportTicket')->name('ticket');
-    Route::get('/new', 'TicketController@openSupportTicket')->name('ticket.open');
-    Route::post('/create', 'TicketController@storeSupportTicket')->name('ticket.store');
-    Route::get('/view/{ticket}', 'TicketController@viewTicket')->name('ticket.view');
-    Route::put('/reply/{ticket}', 'TicketController@replyTicket')->name('ticket.reply');
-    Route::get('/download/{ticket}', 'TicketController@ticketDownload')->name('ticket.download');
-});
-
-
-Route::post('prescription/upload', 'PrescriptionController@patientPrescriptionReportUpload')->name('prescription.upload');
+//  Route::post('/paymentresponse', 'MobileAppController@visa_master_payment_done')->name('payment.done');
 
 
 
-Route::post('prescription/store', 'PrescriptionController@prescriptionStore')->name('prescription.store');
+
+// Route::post('prescription/upload', 'PrescriptionController@patientPrescriptionReportUpload')->name('prescription.upload');
+
+
+
+// Route::post('prescription/store', 'PrescriptionController@prescriptionStore')->name('prescription.store');
 
 
 /*
@@ -112,17 +79,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('sector/new', 'ManageDoctorsController@storeSectors')->name('sector.store');
         Route::post('sector/update/{id}', 'ManageDoctorsController@updateSectors')->name('sector.update');
 
-        //Disease
-        Route::get('disease', 'ManageDoctorsController@diseases')->name('disease');
-        Route::post('disease/new', 'ManageDoctorsController@storeDiseases')->name('disease.store');
-        Route::post('disease/update/{id}', 'ManageDoctorsController@updateDiseases')->name('disease.update');
-
-        //Gallery
-        Route::get('gallery', 'ManageDoctorsController@gallery')->name('gallery');
-        Route::post('gallery/new', 'ManageDoctorsController@storegallery')->name('gallery.store');
-        Route::get('gallery/remove/{id}', 'ManageDoctorsController@galleryRemove')->name('gallery.remove');
-        Route::post('gallery/update/{id}', 'ManageDoctorsController@updategallery')->name('gallery.update');
-
+        // 
         //Posts
         Route::get('posts/all', 'PostController@postsAll')->name('posts.all');
         Route::get('posts/new', 'PostController@newPost')->name('posts.new');
@@ -130,21 +87,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::delete('posts/remove/{id}', 'PostController@postsRemove')->name('posts.remove');
         Route::post('postsImage/upload', 'PostController@uploadpostsImage')->name('posts.upload');
         Route::post('posts/store', 'PostController@postsStore')->name('posts.store');
+        Route::get('posts/detail/{id}', 'PostController@detail')->name('posts.detail');
 
-        //Articles
-        Route::get('articles/all', 'ManageDoctorsController@articlesAll')->name('articles');
-        Route::post('articles/update/{id}', 'ManageDoctorsController@articlesUpdate')->name('articles.update');
-        Route::delete('articles/remove/{id}', 'ManageDoctorsController@articlesRemove')->name('articles.remove');
-        Route::post('articleImage/upload', 'ManageDoctorsController@uploadArticleImage')->name('articles.upload');
-        Route::post('articles/store', 'ManageDoctorsController@articleStore')->name('articles.store');
-
-        //Youtube
-        Route::get('youtube/all', 'ManageDoctorsController@youtubeAll')->name('youtube');
-        Route::post('youtube/update/{id}', 'ManageDoctorsController@youtubeUpdate')->name('youtube.update');
-        Route::delete('youtube/remove/{id}', 'ManageDoctorsController@youtubeRemove')->name('youtube.remove');
-        Route::post('youtubeImage/upload', 'ManageDoctorsController@youtubeImage')->name('youtube.upload');
-        Route::post('youtube/store', 'ManageDoctorsController@youtubeStore')->name('youtube.store');
-
+        
         //Sector
         Route::get('books', 'BooksController@books')->name('books');
         Route::post('books/store', 'BooksController@storeBooks')->name('books.store');

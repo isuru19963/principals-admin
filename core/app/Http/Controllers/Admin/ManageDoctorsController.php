@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Hash;
 class ManageDoctorsController extends Controller
 {
     public function sectors(){
-        $page_title = 'Manage Sector';
-        $empty_message = 'No sector found';
+        $page_title = 'Manage Catgory';
+        $empty_message = 'No Category found';
         $sectors = Sector::latest()->paginate(getPaginate());
         return view('admin.doctors.sector', compact('page_title', 'empty_message','sectors'));
     }

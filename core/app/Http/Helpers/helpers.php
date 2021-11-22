@@ -700,6 +700,13 @@ function imagePath()
         'size' => '800x600',
     ];
 
+    $data['posts'] = [
+        'path' => 'assets/posts',
+        'size' => '800x600',
+    ];
+
+
+
     return $data;
 }
 

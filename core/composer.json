@@ -21,10 +21,12 @@
         "mailjet/mailjet-apiv3-php": "^1.4",
         "mollie/laravel-mollie": "2.10.0",
         "paypal/rest-api-sdk-php": "*",
+        "phpmailer/phpmailer": "^6.2",
         "razorpay/razorpay": "^2.5",
         "sendgrid/sendgrid": "^7.6",
         "stripe/stripe-php": "^7.37",
-        "phpmailer/phpmailer": "^6.2"
+        "vimeo/laravel": "^5.6",
+        "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",

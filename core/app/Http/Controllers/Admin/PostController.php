@@ -17,7 +17,9 @@ use App\DrYotube;
 use App\Gallery;
 use App\PostsModel;
 use Illuminate\Support\Facades\Hash;
+use Uuid;
 use Illuminate\Http\Request;
+use Vimeo\Laravel\Facades\Vimeo;
 
 class PostController extends Controller
 {
@@ -25,12 +27,17 @@ class PostController extends Controller
    public function newPost(){
     $page_title = 'Add New Article';
     $sector = Sector::all();
-    return view('admin.Posts.new_post', compact('page_title','sector'));
+    $vimeo= Vimeo::request('/me/videos', ['per_page' => 10], 'GET');
+    $vimeoData =$vimeo['body']['data'];
+    // return $vimeoData;
+    return view('admin.Posts.new_post', compact('page_title','sector','vimeoData'));
 }
 public function postsAll(){
+    
     $page_title = 'Manage Articles';
         $empty_message = 'No post found';
-        $articles = PostsModel::latest()->paginate(getPaginate());
+        $articles = PostsModel::Select('posts.*','sectors.name')->join('sectors','sectors.id','posts.category')->latest()->paginate(getPaginate());
+
         return view('admin.Posts.all_posts', compact('page_title', 'empty_message', 'articles'));
 }
 public function uploadPostsImage(Request $request)
@@ -53,49 +60,7 @@ public function uploadPostsImage(Request $request)
 }
 
 
-public function postsUpdate(Request $request, $id){
 
-    // $article = new DrArticles();
-    // $article->doctor_id = $request->doctor_id;
-    // $article->article_title =  $request->title;
-    // $article->article_description =  $request->description;
-    // $article->article_image = $request->selectedDocument[0];
-    // $article->category =  $request->category;
-    // $article->save();
-// return $request->title;
-    $article = DrArticles::findOrFail($id);
-    $subject_image = $article->article_image;
-    if($request->hasFile('image')) {
-        try{
-
-            $location = imagePath()['articles']['path'];
-            $size = imagePath()['articles']['size'];
-            $old = $article->article_image;
-            $subject_image = uploadImage($request->image, $location , $size, $old);
-
-        }catch(\Exception $exp) {
-            return back()->withNotify(['error', 'Could not upload the image.']);
-        }
-    }
-    // $article->update([
-    //     // 'doctor_id' => $request->title,
-    //     'article_title' => $request->title,
-    //     'article_description' => $request->details,
-    //     'article_image' => $subject_image,
-    //     // 'category' => $request->category,
-    // ]);
-
-    $article->article_title = $request->title;
-    $article->article_description =   $request->details;
-    $article->doctor_id =$request->doctor_id;
-    $article->category  =$request->category;
-    $article->article_image = $subject_image;
-    $article->save();
-
-    $notify[] = ['success', 'Article details has been updated'];
-    return back()->withNotify($notify);
-
-}
 
 public function postsRemove($id){
 
@@ -107,12 +72,23 @@ public function postsRemove($id){
 
 }
 public function postsStore(Request $request){
+    $this->validate($request, [
+        'title' => 'required|max:190',
+    ]);
 
-    // $this->validate($request, [
-    //     'title' => 'required|max:190',
-    //     'discipline' => 'required|max:190',
-    //     'period' => 'required|max:190',
-    // ]);
+    $subject_image='default.jpg';
+    if($request->hasFile('image')) {
+        try{
+
+            $location = imagePath()['posts']['path'];
+            $size = imagePath()['posts']['size'];
+
+            $subject_image = uploadImage($request->image, $location , $size);
+
+        }catch(\Exception $exp) {
+            return back()->withNotify(['error', 'Could not upload the image.']);
+        }
+    }
 
     // DrArticles::create([
     //     'doctor_id' => 1,
@@ -121,16 +97,75 @@ public function postsStore(Request $request){
     //     'article_image' => $request->selectedDocument,
     //     'category' => $request->category,
     // ]);
-    $article = new DrArticles();
-    $article->doctor_id = $request->doctor_id;
-    $article->article_title =  $request->title;
-    $article->article_description =  $request->description;
-    $article->article_image = $request->selectedDocument[0];
-    $article->category =  $request->category;
-    $article->save();
-    $notify[] = ['success', 'Article has been added'];
+    $post = new PostsModel();
+    $post->post_code = Uuid::generate(4);
+    $post->title =  $request->title;
+    $post->description =  $request->description;
+    $post->category = $request->category;
+    $post->post_image =  $subject_image;
+    $post->document_name =  $request->document;
+    $post->video_url =  $request->vimeo_url;
+    $post->author_name =  $request->author_name;
+    $post->author_description  =  $request->author_description;
+    $post->additional_data =  '{}';
+    $post->added_by_user =  1;
+    $post->status =  $request->status=='on'?1:0;
+    $post->save();
+    $notify[] = ['success', 'Post has been added'];
     return back()->withNotify($notify);
 
+}
+public function detail($id)
+{
+    $page_title = 'Article Detail';
+    $article = PostsModel::findOrFail($id);
+    $sector = Sector::latest()->get();
+    $vimeo= Vimeo::request('/me/videos', ['per_page' => 10], 'GET');
+    $vimeoData =$vimeo['body']['data'];
+
+    return view('admin.posts.detail', compact('page_title', 'article','sector','vimeoData'));
+}
+public function postsUpdate(Request $request, $id)
+{
+    $subject_image='';
+
+    if($request->hasFile('image')) {
+        try{
+
+            $location = imagePath()['posts']['path'];
+            $size = imagePath()['posts']['size'];
+
+            $subject_image = uploadImage($request->image, $location , $size);
+
+        }catch(\Exception $exp) {
+            return back()->withNotify(['error', 'Could not upload the image.']);
+        }
+    }
+
+    // DrArticles::create([
+    //     'doctor_id' => 1,
+    //     'article_title' => $request->title,
+    //     'article_description' => $request->description,
+    //     'article_image' => $request->selectedDocument,
+    //     'category' => $request->category,
+    // ]);
+ 
+    $post = PostsModel::findOrFail($id);
+    $post->title =  $request->title;
+    $post->description =  $request->description;
+    $post->category = $request->category;
+    if($subject_image!=''){
+        $post->post_image =  $subject_image;
+    }
+   
+    $post->document_name =  $request->document;
+    $post->video_url =  $request->vimeo_url;
+    $post->author_name =  $request->author_name;
+    $post->author_description  =  $request->author_description;
+    $post->status =  $request->status=='on'?1:0;
+    $post->save();
+    $notify[] = ['success', 'Post has been Updated'];
+    return back()->withNotify($notify);
 }
 /////End Articles
 

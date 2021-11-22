@@ -9,7 +9,7 @@
                     <table class="default-data-table table ">
                         <thead>
                             <tr>
-                                <th scope="col">@lang('SL')</th>
+                                <th scope="col">@lang('Id')</th>
                                 <th scope="col">@lang('Image')</th>
                                 <th scope="col">@lang('Name')</th>
                                 <th scope="col">@lang('Action')</th>
@@ -96,7 +96,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"> @lang('Update Sector')</h5>
+                <h5 class="modal-title"> @lang('Update Category')</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -106,7 +106,7 @@
 
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>@lang('Sector Name')</label>
+                        <label>@lang('Category Name')</label>
                         <input type="text"class="form-control name" placeholder="@lang('Example : Dental')" name="name" required>
                     </div>
                     <div class="form-group">
@@ -114,7 +114,7 @@
                         <textarea name="details" class="form-control details" rows="5" placeholder="@lang('Example : Mollitia nihil duci mus minima. At molestiae fugit qui!')" required></textarea>
                     </div>
                     <div class="form-group">
-                        <b>@lang('Sector Image')</b>
+                        <b>@lang('Category Image')</b>
                         <div class="image-upload mt-2">
                             <div class="thumb">
                                 <div class="avatar-preview">
