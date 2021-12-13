@@ -21,30 +21,38 @@ use Illuminate\Support\Facades\Hash;
 
 class ManageDoctorsController extends Controller
 {
-    public function sectors(){
-        $page_title = 'Manage Catgory';
+    public function sectors()
+    {
+        $page_title = 'Manage Category';
         $empty_message = 'No Category found';
         $sectors = Sector::latest()->paginate(getPaginate());
-        return view('admin.doctors.sector', compact('page_title', 'empty_message','sectors'));
+        return view('admin.doctors.sector', compact('page_title', 'empty_message', 'sectors'));
     }
 
-    public function storeSectors(Request $request){
+    public function newCategory()
+    {
+        $page_title = 'Add New Category';
+        return view('admin.category.new', compact('page_title'));
+    }
+
+    public function storeSectors(Request $request)
+    {
         $request->validate([
             'image' => ['required', new FileTypeValidate(['jpeg', 'jpg', 'png'])],
-            'name' => 'required|string|max:190',
+            'name' => 'required|string|max:190|unique:sectors',
             'details' => 'required|string|max:190'
         ]);
 
         $subject_image = '';
-        if($request->hasFile('image')) {
-            try{
+        if ($request->hasFile('image')) {
+            try {
 
                 $location = imagePath()['sector']['path'];
                 $size = imagePath()['sector']['size'];
 
-                $subject_image = uploadImage($request->image, $location , $size);
+                $subject_image = uploadImage($request->image, $location, $size);
 
-            }catch(\Exception $exp) {
+            } catch (\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
             }
         }
@@ -55,11 +63,19 @@ class ManageDoctorsController extends Controller
             'details' => $request->details,
         ]);
 
-        $notify[] = ['success', 'Sector details has been added'];
+        $notify[] = ['success', 'Category details has been added'];
         return back()->withNotify($notify);
     }
 
-    public function updateSectors(Request $request,$id){
+    public function detailCategory($id)
+    {
+        $page_title = 'Category Details';
+        $category = Sector::find($id);
+        return view('admin.category.detail', compact('page_title', 'category'));
+    }
+
+    public function updateSectors(Request $request, $id)
+    {
 
         $request->validate([
             'image' => [new FileTypeValidate(['jpeg', 'jpg', 'png'])],
@@ -70,15 +86,15 @@ class ManageDoctorsController extends Controller
         $sector = Sector::findOrFail($id);
 
         $subject_image = $sector->image;
-        if($request->hasFile('image')) {
-            try{
+        if ($request->hasFile('image')) {
+            try {
 
                 $location = imagePath()['sector']['path'];
                 $size = imagePath()['sector']['size'];
                 $old = $sector->image;
-                $subject_image = uploadImage($request->image, $location , $size, $old);
+                $subject_image = uploadImage($request->image, $location, $size, $old);
 
-            }catch(\Exception $exp) {
+            } catch (\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
             }
         }
@@ -89,19 +105,21 @@ class ManageDoctorsController extends Controller
             'details' => $request->details,
         ]);
 
-        $notify[] = ['success', 'Sector details has been Updated'];
+        $notify[] = ['success', 'Category details has been Updated'];
         return back()->withNotify($notify);
     }
 
     /////Disease
-    public function diseases(){
+    public function diseases()
+    {
         $page_title = 'Manage Disease';
         $empty_message = 'No diseas found';
         $sectors = Disease::latest()->paginate(getPaginate());
-        return view('admin.doctors.disease', compact('page_title', 'empty_message','sectors'));
+        return view('admin.doctors.disease', compact('page_title', 'empty_message', 'sectors'));
     }
 
-    public function storeDiseases(Request $request){
+    public function storeDiseases(Request $request)
+    {
         $request->validate([
             'image' => ['required', new FileTypeValidate(['jpeg', 'jpg', 'png'])],
             'name' => 'required|string|max:190',
@@ -109,15 +127,15 @@ class ManageDoctorsController extends Controller
         ]);
 
         $subject_image = '';
-        if($request->hasFile('image')) {
-            try{
+        if ($request->hasFile('image')) {
+            try {
 
                 $location = imagePath()['disease']['path'];
                 $size = imagePath()['disease']['size'];
 
-                $subject_image = uploadImage($request->image, $location , $size);
+                $subject_image = uploadImage($request->image, $location, $size);
 
-            }catch(\Exception $exp) {
+            } catch (\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
             }
         }
@@ -132,7 +150,8 @@ class ManageDoctorsController extends Controller
         return back()->withNotify($notify);
     }
 
-    public function updateDiseases(Request $request,$id){
+    public function updateDiseases(Request $request, $id)
+    {
 
         $request->validate([
             'image' => [new FileTypeValidate(['jpeg', 'jpg', 'png'])],
@@ -143,15 +162,15 @@ class ManageDoctorsController extends Controller
         $sector = Disease::findOrFail($id);
 
         $subject_image = $sector->image;
-        if($request->hasFile('image')) {
-            try{
+        if ($request->hasFile('image')) {
+            try {
 
                 $location = imagePath()['disease']['path'];
                 $size = imagePath()['disease']['size'];
                 $old = $sector->image;
-                $subject_image = uploadImage($request->image, $location , $size, $old);
+                $subject_image = uploadImage($request->image, $location, $size, $old);
 
-            }catch(\Exception $exp) {
+            } catch (\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
             }
         }
@@ -167,13 +186,16 @@ class ManageDoctorsController extends Controller
     }
 
     /////Gallery
-    public function gallery(){
+    public function gallery()
+    {
         $page_title = 'Manage Gallery Images';
         $empty_message = 'No images found';
         $sectors = Gallery::latest()->paginate(getPaginate());
-        return view('admin.doctors.gallery', compact('page_title', 'empty_message','sectors'));
+        return view('admin.doctors.gallery', compact('page_title', 'empty_message', 'sectors'));
     }
-    public function galleryRemove($id){
+
+    public function galleryRemove($id)
+    {
 
         $gallery = Gallery::where('id', $id)->findOrFail($id);
         $gallery->delete();
@@ -182,7 +204,9 @@ class ManageDoctorsController extends Controller
         return back()->withNotify($notify);
 
     }
-    public function storegallery(Request $request){
+
+    public function storegallery(Request $request)
+    {
         $request->validate([
             'image' => ['required', new FileTypeValidate(['jpeg', 'jpg', 'png'])],
             // 'name' => 'required|string|max:190',
@@ -190,15 +214,15 @@ class ManageDoctorsController extends Controller
         ]);
 
         $subject_image = '';
-        if($request->hasFile('image')) {
-            try{
+        if ($request->hasFile('image')) {
+            try {
 
                 $location = imagePath()['gallery']['path'];
                 $size = imagePath()['gallery']['size'];
 
-                $subject_image = uploadImage($request->image, $location , $size);
+                $subject_image = uploadImage($request->image, $location, $size);
 
-            }catch(\Exception $exp) {
+            } catch (\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
             }
         }
@@ -210,14 +234,15 @@ class ManageDoctorsController extends Controller
         // ]);
         $article = new Gallery();
         $article->image = $subject_image;
-        $article->status =  1;
+        $article->status = 1;
         $article->save();
 
         $notify[] = ['success', 'Gallery details has been added'];
         return back()->withNotify($notify);
     }
 
-    public function updategallery(Request $request,$id){
+    public function updategallery(Request $request, $id)
+    {
 
         $request->validate([
             'image' => [new FileTypeValidate(['jpeg', 'jpg', 'png'])],
@@ -228,15 +253,15 @@ class ManageDoctorsController extends Controller
         $sector = Disease::findOrFail($id);
 
         $subject_image = $sector->image;
-        if($request->hasFile('image')) {
-            try{
+        if ($request->hasFile('image')) {
+            try {
 
                 $location = imagePath()['disease']['path'];
                 $size = imagePath()['disease']['size'];
                 $old = $sector->image;
-                $subject_image = uploadImage($request->image, $location , $size, $old);
+                $subject_image = uploadImage($request->image, $location, $size, $old);
 
-            }catch(\Exception $exp) {
+            } catch (\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
             }
         }
@@ -252,14 +277,16 @@ class ManageDoctorsController extends Controller
     }
 
 
-    public function locations(){
+    public function locations()
+    {
         $page_title = 'Manage Location';
         $empty_message = 'No location found';
         $locations = Location::latest()->paginate(getPaginate());
-        return view('admin.doctors.location', compact('page_title', 'empty_message','locations'));
+        return view('admin.doctors.location', compact('page_title', 'empty_message', 'locations'));
     }
 
-    public function storeLocations(Request $request){
+    public function storeLocations(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:190'
         ]);
@@ -272,7 +299,8 @@ class ManageDoctorsController extends Controller
         return back()->withNotify($notify);
     }
 
-    public function updateLocations(Request $request,$id){
+    public function updateLocations(Request $request, $id)
+    {
 
         $request->validate([
             'name' => 'required|string|max:190'
@@ -287,223 +315,239 @@ class ManageDoctorsController extends Controller
         $notify[] = ['success', 'Location details has been Updated'];
         return back()->withNotify($notify);
     }
+
 ///////Articles///////////////
-public function articlesAll(){
-    $sector = Sector::all();
-    $doctors = Doctor::all();
+    public function articlesAll()
+    {
+        $sector = Sector::all();
+        $doctors = Doctor::all();
 
 
-    $page_title = 'All Posts Details';
-    $education_details = DrArticles::select('doctor_articles.*','doctors.name')
-    // ->where('doctor_id', Auth::guard('doctor')->user()->id)
-    ->join('doctors', 'doctors.id', '=', 'doctor_articles.doctor_id')
-    ->get();
-    return view('admin.doctors.articles',compact('page_title','education_details','sector','doctors'));
-}
-public function uploadArticleImage(Request $request)
-{
-    $image = $request->file('file');
-    $imageName = $image->getClientOriginalName();
-    $done=$image->move('assets/articles', $imageName);
-    return response()->json(['successss' => $imageName]);
-
-    // try{
-
-    //     $location = imagePath()['appointment']['path'];
-    //     $size = imagePath()['appointment']['size'];
-    //     $image->move($path, $filename);
-    //   $staff_image = uploadImage($request->file('file'), $location , $size);
-
-    // }catch(\Exception $exp) {
-    //     return 'error Could not upload the image.';
-    // }
-}
-public function articlesStore(Request $request){
-
-    $this->validate($request, [
-        'institution' => 'required|max:190',
-        'discipline' => 'required|max:190',
-        'period' => 'required|max:190',
-    ]);
-
-    // DrArticles::create([
-    //     'doctor_id' => Auth::guard('doctor')->user()->id,
-    //     'institution' => $request->institution,
-    //     'discipline' => $request->discipline,
-    //     'period' => $request->period,
-    // ]);
-
-    $notify[] = ['success', 'Education details has been added'];
-    return back()->withNotify($notify);
-
-}
-
-public function articlesUpdate(Request $request, $id){
-
-    // $article = new DrArticles();
-    // $article->doctor_id = $request->doctor_id;
-    // $article->article_title =  $request->title;
-    // $article->article_description =  $request->description;
-    // $article->article_image = $request->selectedDocument[0];
-    // $article->category =  $request->category;
-    // $article->save();
-// return $request->title;
-    $article = DrArticles::findOrFail($id);
-    $subject_image = $article->article_image;
-    if($request->hasFile('image')) {
-        try{
-
-            $location = imagePath()['articles']['path'];
-            $size = imagePath()['articles']['size'];
-            $old = $article->article_image;
-            $subject_image = uploadImage($request->image, $location , $size, $old);
-
-        }catch(\Exception $exp) {
-            return back()->withNotify(['error', 'Could not upload the image.']);
-        }
+        $page_title = 'All Posts Details';
+        $education_details = DrArticles::select('doctor_articles.*', 'doctors.name')
+            // ->where('doctor_id', Auth::guard('doctor')->user()->id)
+            ->join('doctors', 'doctors.id', '=', 'doctor_articles.doctor_id')
+            ->get();
+        return view('admin.doctors.articles', compact('page_title', 'education_details', 'sector', 'doctors'));
     }
-    // $article->update([
-    //     // 'doctor_id' => $request->title,
-    //     'article_title' => $request->title,
-    //     'article_description' => $request->details,
-    //     'article_image' => $subject_image,
-    //     // 'category' => $request->category,
-    // ]);
 
-    $article->article_title = $request->title;
-    $article->article_description =   $request->details;
-    $article->doctor_id =$request->doctor_id;
-    $article->category  =$request->category;
-    $article->article_image = $subject_image;
-    $article->save();
+    public function uploadArticleImage(Request $request)
+    {
+        $image = $request->file('file');
+        $imageName = $image->getClientOriginalName();
+        $done = $image->move('assets/articles', $imageName);
+        return response()->json(['successss' => $imageName]);
 
-    $notify[] = ['success', 'Article details has been updated'];
-    return back()->withNotify($notify);
+        // try{
 
-}
+        //     $location = imagePath()['appointment']['path'];
+        //     $size = imagePath()['appointment']['size'];
+        //     $image->move($path, $filename);
+        //   $staff_image = uploadImage($request->file('file'), $location , $size);
 
-public function articlesRemove($id){
+        // }catch(\Exception $exp) {
+        //     return 'error Could not upload the image.';
+        // }
+    }
 
-    $education_details = DrArticles::findOrFail($id);
-    $education_details->delete();
+    public function articlesStore(Request $request)
+    {
 
-    $notify[] = ['success', 'Article successfuly deleted'];
-    return back()->withNotify($notify);
+        $this->validate($request, [
+            'institution' => 'required|max:190',
+            'discipline' => 'required|max:190',
+            'period' => 'required|max:190',
+        ]);
 
-}
-public function articleStore(Request $request){
+        // DrArticles::create([
+        //     'doctor_id' => Auth::guard('doctor')->user()->id,
+        //     'institution' => $request->institution,
+        //     'discipline' => $request->discipline,
+        //     'period' => $request->period,
+        // ]);
 
-    // $this->validate($request, [
-    //     'title' => 'required|max:190',
-    //     'discipline' => 'required|max:190',
-    //     'period' => 'required|max:190',
-    // ]);
+        $notify[] = ['success', 'Education details has been added'];
+        return back()->withNotify($notify);
 
-    // DrArticles::create([
-    //     'doctor_id' => 1,
-    //     'article_title' => $request->title,
-    //     'article_description' => $request->description,
-    //     'article_image' => $request->selectedDocument,
-    //     'category' => $request->category,
-    // ]);
-    $article = new DrArticles();
-    $article->doctor_id = $request->doctor_id;
-    $article->article_title =  $request->title;
-    $article->article_description =  $request->description;
-    $article->article_image = $request->selectedDocument[0];
-    $article->category =  $request->category;
-    $article->save();
-    $notify[] = ['success', 'Article has been added'];
-    return back()->withNotify($notify);
+    }
 
-}
+    public function articlesUpdate(Request $request, $id)
+    {
+
+        // $article = new DrArticles();
+        // $article->doctor_id = $request->doctor_id;
+        // $article->article_title =  $request->title;
+        // $article->article_description =  $request->description;
+        // $article->article_image = $request->selectedDocument[0];
+        // $article->category =  $request->category;
+        // $article->save();
+// return $request->title;
+        $article = DrArticles::findOrFail($id);
+        $subject_image = $article->article_image;
+        if ($request->hasFile('image')) {
+            try {
+
+                $location = imagePath()['articles']['path'];
+                $size = imagePath()['articles']['size'];
+                $old = $article->article_image;
+                $subject_image = uploadImage($request->image, $location, $size, $old);
+
+            } catch (\Exception $exp) {
+                return back()->withNotify(['error', 'Could not upload the image.']);
+            }
+        }
+        // $article->update([
+        //     // 'doctor_id' => $request->title,
+        //     'article_title' => $request->title,
+        //     'article_description' => $request->details,
+        //     'article_image' => $subject_image,
+        //     // 'category' => $request->category,
+        // ]);
+
+        $article->article_title = $request->title;
+        $article->article_description = $request->details;
+        $article->doctor_id = $request->doctor_id;
+        $article->category = $request->category;
+        $article->article_image = $subject_image;
+        $article->save();
+
+        $notify[] = ['success', 'Article details has been updated'];
+        return back()->withNotify($notify);
+
+    }
+
+    public function articlesRemove($id)
+    {
+
+        $education_details = DrArticles::findOrFail($id);
+        $education_details->delete();
+
+        $notify[] = ['success', 'Article successfuly deleted'];
+        return back()->withNotify($notify);
+
+    }
+
+    public function articleStore(Request $request)
+    {
+
+        // $this->validate($request, [
+        //     'title' => 'required|max:190',
+        //     'discipline' => 'required|max:190',
+        //     'period' => 'required|max:190',
+        // ]);
+
+        // DrArticles::create([
+        //     'doctor_id' => 1,
+        //     'article_title' => $request->title,
+        //     'article_description' => $request->description,
+        //     'article_image' => $request->selectedDocument,
+        //     'category' => $request->category,
+        // ]);
+        $article = new DrArticles();
+        $article->doctor_id = $request->doctor_id;
+        $article->article_title = $request->title;
+        $article->article_description = $request->description;
+        $article->article_image = $request->selectedDocument[0];
+        $article->category = $request->category;
+        $article->save();
+        $notify[] = ['success', 'Article has been added'];
+        return back()->withNotify($notify);
+
+    }
 /////End Articles
 
 ///////Youtube///////////////
-public function youtubeAll(){
-    $doctors = Doctor::all();
-    $page_title = 'All Youtube Link Details';
-    $sector = Sector::all();
-    $education_details = DrYotube::select('doctor_videos.*','doctors.name')
-    // ->where('doctor_id', Auth::guard('doctor')->user()->id)
-    ->join('doctors', 'doctors.id', '=', 'doctor_videos.doctor_id')
-    ->get();
-    return view('admin.doctors.youtubelinks',compact('page_title','education_details','sector','doctors'));
-}
-public function youtubeArticleImage(Request $request)
-{
-    $image = $request->file('file');
-    $imageName = $image->getClientOriginalName();
-    $done=$image->move('assets/articles', $imageName);
-    return response()->json(['successss' => $imageName]);
+    public function youtubeAll()
+    {
+        $doctors = Doctor::all();
+        $page_title = 'All Youtube Link Details';
+        $sector = Sector::all();
+        $education_details = DrYotube::select('doctor_videos.*', 'doctors.name')
+            // ->where('doctor_id', Auth::guard('doctor')->user()->id)
+            ->join('doctors', 'doctors.id', '=', 'doctor_videos.doctor_id')
+            ->get();
+        return view('admin.doctors.youtubelinks', compact('page_title', 'education_details', 'sector', 'doctors'));
+    }
 
-    // try{
+    public function youtubeArticleImage(Request $request)
+    {
+        $image = $request->file('file');
+        $imageName = $image->getClientOriginalName();
+        $done = $image->move('assets/articles', $imageName);
+        return response()->json(['successss' => $imageName]);
 
-    //     $location = imagePath()['appointment']['path'];
-    //     $size = imagePath()['appointment']['size'];
-    //     $image->move($path, $filename);
-    //   $staff_image = uploadImage($request->file('file'), $location , $size);
+        // try{
 
-    // }catch(\Exception $exp) {
-    //     return 'error Could not upload the image.';
-    // }
-}
+        //     $location = imagePath()['appointment']['path'];
+        //     $size = imagePath()['appointment']['size'];
+        //     $image->move($path, $filename);
+        //   $staff_image = uploadImage($request->file('file'), $location , $size);
 
-
-public function youtubeUpdate(Request $request, $id){
-
-    $article = DrYotube::findOrFail($id);
+        // }catch(\Exception $exp) {
+        //     return 'error Could not upload the image.';
+        // }
+    }
 
 
+    public function youtubeUpdate(Request $request, $id)
+    {
 
-    $article->title = $request->title;
-    $article->description = $request->details;
-    $article->doctor_id =$request->doctor_id;
-    $article->category  =$request->category;
-    $article->youtube_link = $request->youtubelink;
-    $article->save();
+        $article = DrYotube::findOrFail($id);
 
-    $notify[] = ['success', 'Youtube Video details has been updated'];
-    return back()->withNotify($notify);
 
-}
+        $article->title = $request->title;
+        $article->description = $request->details;
+        $article->doctor_id = $request->doctor_id;
+        $article->category = $request->category;
+        $article->youtube_link = $request->youtubelink;
+        $article->save();
 
-public function youtubeRemove($id){
+        $notify[] = ['success', 'Youtube Video details has been updated'];
+        return back()->withNotify($notify);
 
-    $education_details = DrYotube::findOrFail($id);
-    $education_details->delete();
+    }
 
-    $notify[] = ['success', 'Youtube Video details successfuly deleted'];
-    return back()->withNotify($notify);
+    public function youtubeRemove($id)
+    {
 
-}
-public function youtubeStore(Request $request){
+        $education_details = DrYotube::findOrFail($id);
+        $education_details->delete();
 
-    // $this->validate($request, [
-    //     'title' => 'required|max:190',
-    //     'discipline' => 'required|max:190',
-    //     'period' => 'required|max:190',
-    // ]);
+        $notify[] = ['success', 'Youtube Video details successfuly deleted'];
+        return back()->withNotify($notify);
 
-    // DrArticles::create([
-    //     'doctor_id' => 1,
-    //     'article_title' => $request->title,
-    //     'article_description' => $request->description,
-    //     'article_image' => $request->selectedDocument,
-    //     'category' => $request->category,
-    // ]);
-    $article = new DrYotube();
-    $article->doctor_id = $request->doctor_id;
-    $article->title =  $request->title;
-    $article->description =  $request->description;
-    $article->youtube_link = 'https://www.youtube.com/embed/'. $request->link;
-    $article->category =  $request->category;
-    $article->save();
-    $notify[] = ['success', 'Article has been added'];
-    return back()->withNotify($notify);
+    }
 
-}
-    public function allDoctors(){
+    public function youtubeStore(Request $request)
+    {
+
+        // $this->validate($request, [
+        //     'title' => 'required|max:190',
+        //     'discipline' => 'required|max:190',
+        //     'period' => 'required|max:190',
+        // ]);
+
+        // DrArticles::create([
+        //     'doctor_id' => 1,
+        //     'article_title' => $request->title,
+        //     'article_description' => $request->description,
+        //     'article_image' => $request->selectedDocument,
+        //     'category' => $request->category,
+        // ]);
+        $article = new DrYotube();
+        $article->doctor_id = $request->doctor_id;
+        $article->title = $request->title;
+        $article->description = $request->description;
+        $article->youtube_link = 'https://www.youtube.com/embed/' . $request->link;
+        $article->category = $request->category;
+        $article->save();
+        $notify[] = ['success', 'Article has been added'];
+        return back()->withNotify($notify);
+
+    }
+
+    public function allDoctors()
+    {
         $page_title = 'Manage Doctors';
         $empty_message = 'No doctor found';
         $doctors = Doctor::latest()->paginate(getPaginate());
@@ -533,6 +577,7 @@ public function youtubeStore(Request $request){
         $doctors = Doctor::emailUnverified()->latest()->paginate(getPaginate());
         return view('admin.doctors.list', compact('page_title', 'empty_message', 'doctors'));
     }
+
     public function emailVerifiedDoctors()
     {
         $page_title = 'Email Verified Doctors';
@@ -549,6 +594,7 @@ public function youtubeStore(Request $request){
         $doctors = Doctor::smsUnverified()->latest()->paginate(getPaginate());
         return view('admin.doctors.list', compact('page_title', 'empty_message', 'doctors'));
     }
+
     public function smsVerifiedDoctors()
     {
         $page_title = 'SMS Verified Doctors';
@@ -557,16 +603,18 @@ public function youtubeStore(Request $request){
         return view('admin.doctors.list', compact('page_title', 'empty_message', 'doctors'));
     }
 
-    public function newDoctor(){
+    public function newDoctor()
+    {
         $page_title = 'Add New Doctor';
         $sectors = Sector::latest()->get();
         $locations = Location::latest()->get();
-        return view('admin.doctors.new', compact('page_title','sectors','locations'));
+        return view('admin.doctors.new', compact('page_title', 'sectors', 'locations'));
     }
 
-    public function storeDoctor(Request $request){
+    public function storeDoctor(Request $request)
+    {
         $request->validate([
-            'image' => ['required',new FileTypeValidate(['jpeg', 'jpg', 'png'])],
+            'image' => ['required', new FileTypeValidate(['jpeg', 'jpg', 'png'])],
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:doctors',
             'mobile' => 'required|string|max:191|unique:doctors',
@@ -579,17 +627,17 @@ public function youtubeStore(Request $request){
             'fees' => 'required|numeric|gt:0',
             'rating' => 'required|numeric|gt:0|max:5',
             'about' => 'required',
-            ]);
+        ]);
 
         $doctor_image = '';
-        if($request->hasFile('image')) {
-            try{
+        if ($request->hasFile('image')) {
+            try {
                 $location = imagePath()['doctor']['path'];
                 $size = imagePath()['doctor']['size'];
 
-                $doctor_image = uploadImage($request->image, $location , $size);
+                $doctor_image = uploadImage($request->image, $location, $size);
 
-            }catch(\Exception $exp) {
+            } catch (\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
             }
         }
@@ -624,15 +672,15 @@ public function youtubeStore(Request $request){
     {
         $page_title = 'Doctor Detail';
         $doctor = Doctor::findOrFail($id);
-        $assistants = Assistant::where('status',1)->latest()->get();
+        $assistants = Assistant::where('status', 1)->latest()->get();
         $sectors = Sector::latest()->get();
         $locations = Location::latest()->get();
-        $total_online_earn = Deposit::where('doctor_id',$doctor->id)->where('status',1)->sum('amount');
+        $total_online_earn = Deposit::where('doctor_id', $doctor->id)->where('status', 1)->sum('amount');
         $total_cash_earn = $doctor->balance - $total_online_earn;
-        $appointment_done = Appointment::where('doctor_id',$doctor->id)->where('try',1)->where('is_complete',1)->count();
-        $appointment_trashed = Appointment::where('doctor_id',$doctor->id)->where('d_status',1)->count();
-        $total_appointment = Appointment::where('doctor_id',$doctor->id)->where('try',1)->count();
-        return view('admin.doctors.detail', compact('page_title', 'doctor','assistants','sectors','locations','total_online_earn','total_cash_earn','appointment_done','total_appointment','appointment_trashed'));
+        $appointment_done = Appointment::where('doctor_id', $doctor->id)->where('try', 1)->where('is_complete', 1)->count();
+        $appointment_trashed = Appointment::where('doctor_id', $doctor->id)->where('d_status', 1)->count();
+        $total_appointment = Appointment::where('doctor_id', $doctor->id)->where('try', 1)->count();
+        return view('admin.doctors.detail', compact('page_title', 'doctor', 'assistants', 'sectors', 'locations', 'total_online_earn', 'total_cash_earn', 'appointment_done', 'total_appointment', 'appointment_trashed'));
     }
 
     public function update(Request $request, $id)
@@ -641,8 +689,8 @@ public function youtubeStore(Request $request){
 
         $request->validate([
             'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:doctors,email,'.$doctor->id,
-            'mobile' => 'required|string|max:191|unique:doctors,mobile,'. $doctor->id,
+            'email' => 'required|string|email|max:191|unique:doctors,email,' . $doctor->id,
+            'mobile' => 'required|string|max:191|unique:doctors,mobile,' . $doctor->id,
             'address' => 'required|string|max:191',
             'sector_id' => 'required|numeric|gt:0',
             'qualification' => 'required|string|max:180',
@@ -650,7 +698,6 @@ public function youtubeStore(Request $request){
             'fees' => 'required|numeric|gt:0',
             'rating' => 'required|numeric|gt:0|max:5',
         ]);
-
 
 
         if ($request->email != $doctor->email && Doctor::whereEmail($request->email)->whereId('!=', $doctor->id)->count() > 0) {
@@ -747,7 +794,7 @@ public function youtubeStore(Request $request){
     public function loginIpHistory($ip)
     {
         $page_title = 'Login By - ' . $ip;
-        $login_logs = DoctorLogin::where('doctor_ip',$ip)->latest()->paginate(getPaginate());
+        $login_logs = DoctorLogin::where('doctor_ip', $ip)->latest()->paginate(getPaginate());
         $empty_message = 'No doctors login found.';
         return view('admin.doctors.logins', compact('page_title', 'empty_message', 'login_logs'));
 

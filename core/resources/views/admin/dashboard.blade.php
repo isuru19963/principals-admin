@@ -46,7 +46,7 @@
                     <div class="desciption">
                         <span class="text--small" style="color: black; font-weight: bold;">@lang('Total Coaches')</span>
                     </div>
-                    <a href="{{route('admin.doctors.all')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
+                    <a href="{{route('admin.coaches.all')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                 </div>
             </div>
         </div><!-- dashboard-w1 end -->
@@ -64,7 +64,7 @@
                         <span class="text--small" style="color: black; font-weight: bold;">@lang('Total Principals')</span>
                     </div>
 
-                    <a href="{{route('admin.assistants.all')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
+                    <a href="{{route('admin.principals.all')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                 </div>
             </div>
         </div><!-- dashboard-w1 end -->
@@ -81,7 +81,7 @@
                         <span class="text--small" style="color: black; font-weight: bold;">@lang('Total Appointments Minutes')</span>
                     </div>
 
-                    <a href="{{route('admin.staff.all')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
+                    <a href="{{route('admin.appointments.all')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
                 </div>
             </div>
         </div><!-- dashboard-w1 end -->
@@ -95,7 +95,8 @@
                         <span class="amount" >{{$widget['new_appointments']}}</span>
                     </div>
                     <div class="desciption">
-                        <span class="text--small" style="color: black; font-weight: bold;">@lang('New Appointments')</span>
+                        <span class="text--small" style="color: black; font-weight: bold;">@lang('New Appointments') <br></span>
+
                     </div>
 
                     <a href="{{route('admin.appointments.all')}}" class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
@@ -470,213 +471,5 @@
 
     </script>
 
-    <script>
-        'use strict';
-        var ctx = document.getElementById('doctorBrowserChart');
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: @json($chart['doctor_browser_counter']->keys()),
-                datasets: [{
-                    data: {{ $chart['doctor_browser_counter']->flatten() }},
-                    backgroundColor: [
-                        '#FF4500',
-                        '#e52d27',
-                        '#fba540',
-                        '#e7505a',
-                        '#5050bf',
-                        '#8E44AD',
-                        '#4f8a8b',
-                        '#1f4068',
-                        '#62760c',
-                        '#be5683',
-                        '#cf1b1b',
-                        '#96bb7c',
-                        '#d3de32',
-                        '#e8505b',
-                        '#24a19c',
-                        '#3b6978',
-                        '#b83b5e',
-                        '#ff4301',
-                        '#c4fb6d',
-                        '#bac964',
-                        '#fb7813',
-                        '#3b6978',
-                        '#f3c623',
-                        '#127681',
-                        '#562349',
-                        '#1f4068',
-                        '#035aa6',
-                        '#95389e',
-                        '#481380'
-                    ],
-                    borderColor: [
-                        'rgba(231, 80, 90, 0.75)'
-                    ],
-                    borderWidth: 0,
-
-                }]
-            },
-            options: {
-                aspectRatio: 1,
-                responsive: true,
-                maintainAspectRatio: true,
-                elements: {
-                    line: {
-                        tension: 0 // disables bezier curves
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        display: false
-                    }],
-                    yAxes: [{
-                        display: false
-                    }]
-                },
-                legend: {
-                    display: false,
-                }
-            }
-        });
-
-
-
-        var ctx = document.getElementById('doctorOsChart');
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: @json($chart['doctor_os_counter']->keys()),
-                datasets: [{
-                    data: {{ $chart['doctor_os_counter']->flatten() }},
-                    backgroundColor: [
-                        '#FF4500',
-                        '#e52d27',
-                        '#fba540',
-                        '#e7505a',
-                        '#5050bf',
-                        '#8E44AD',
-                        '#4f8a8b',
-                        '#1f4068',
-                        '#62760c',
-                        '#be5683',
-                        '#cf1b1b',
-                        '#96bb7c',
-                        '#d3de32',
-                        '#e8505b',
-                        '#24a19c',
-                        '#3b6978',
-                        '#b83b5e',
-                        '#ff4301',
-                        '#c4fb6d',
-                        '#bac964',
-                        '#fb7813',
-                        '#3b6978',
-                        '#f3c623',
-                        '#127681',
-                        '#562349',
-                        '#1f4068',
-                        '#035aa6',
-                        '#95389e',
-                        '#481380'
-
-                    ],
-                    borderColor: [
-                        'rgba(0, 0, 0, 0.05)'
-                    ],
-                    borderWidth: 0,
-
-                }]
-            },
-            options: {
-                aspectRatio: 1,
-                responsive: true,
-                elements: {
-                    line: {
-                        tension: 0 // disables bezier curves
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        display: false
-                    }],
-                    yAxes: [{
-                        display: false
-                    }]
-                },
-                legend: {
-                    display: false,
-                }
-            },
-        });
-
-
-        // Donut chart
-        var ctx = document.getElementById('doctorCountryChart');
-        var myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: @json($chart['doctor_country_counter']->keys()),
-                datasets: [{
-                    data: {{ $chart['doctor_country_counter']->flatten() }},
-                    backgroundColor: [
-                        '#FF4500',
-                        '#e52d27',
-                        '#fba540',
-                        '#e7505a',
-                        '#5050bf',
-                        '#8E44AD',
-                        '#4f8a8b',
-                        '#1f4068',
-                        '#62760c',
-                        '#be5683',
-                        '#cf1b1b',
-                        '#96bb7c',
-                        '#d3de32',
-                        '#e8505b',
-                        '#24a19c',
-                        '#3b6978',
-                        '#b83b5e',
-                        '#ff4301',
-                        '#c4fb6d',
-                        '#bac964',
-                        '#fb7813',
-                        '#3b6978',
-                        '#f3c623',
-                        '#127681',
-                        '#562349',
-                        '#1f4068',
-                        '#035aa6',
-                        '#95389e',
-                        '#481380',
-                    ],
-                    borderColor: [
-                        'rgba(231, 80, 90, 0.75)'
-                    ],
-                    borderWidth: 3,
-
-                }]
-            },
-            options: {
-                aspectRatio: 1,
-                responsive: true,
-                elements: {
-                    line: {
-                        tension: 0 // disables bezier curves
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        display: false
-                    }],
-                    yAxes: [{
-                        display: false
-                    }]
-                },
-                legend: {
-                    display: false,
-                }
-            }
-        });
-    </script>
+    <!-- -->
 @endpush

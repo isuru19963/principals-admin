@@ -29,18 +29,11 @@ class AdminController extends Controller
         //Info
         $widget['total_doctors'] = Users::where('user_type','coach')->count();
         $widget['total_assistants'] = Users::where('user_type','principal')->count();
-        $widget['total_staff'] = Staff::count();
-        $widget['new_appointments'] = Appointment::where('try',1)->where('is_complete',0)->where('d_status',0)->where('is_complete',0)->whereHas('doctor', function ($query) {
-            $query->where('status',1);
-       })->count();
-        $widget['done_appointments'] = Appointment::where('try',1)->where('is_complete',1)->where('d_status',0)->where('is_complete',0)->whereHas('doctor', function ($query) {
-            $query->where('status',1);
-       })->count();
-        $widget['trashed_appointments'] = Appointment::where('d_status',1)->where('is_complete',0)->whereHas('doctor', function ($query) {
-            $query->where('status',1);
-       })->count();
-        $widget['email_verified_doctors'] = Doctor::where('ev', 1)->count();
-        $widget['sms_verified_doctors'] = Doctor::where('sv', 1)->count();
+        $widget['total_staff'] = 2;
+        $widget['new_appointments'] = 10;
+        $widget['done_appointments'] = 2;
+        $widget['trashed_appointments'] = 2;
+     
 
         $appointment_chart = Appointment::where('try',1)->whereYear('created_at', '=', date('Y'))->orderBy('created_at')->get()->groupBy(function ($d) {
             return $d->created_at->format('F');
@@ -70,18 +63,11 @@ class AdminController extends Controller
 
 
 
-        // user Browsing, Country, Operating Log
-        $doctor_login_data = DoctorLogin::whereDate('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->get(['browser', 'os', 'country']);
+        $doctor_login_data = 1;
 
-        $chart['doctor_browser_counter'] = $doctor_login_data->groupBy('browser')->map(function ($item, $key) {
-            return collect($item)->count();
-        });
-        $chart['doctor_os_counter'] = $doctor_login_data->groupBy('os')->map(function ($item, $key) {
-            return collect($item)->count();
-        });
-        $chart['doctor_country_counter'] = $doctor_login_data->groupBy('country')->map(function ($item, $key) {
-            return collect($item)->count();
-        })->sort()->reverse()->take(5);
+        $chart['doctor_browser_counter'] = 1;
+        $chart['doctor_os_counter'] = 1;
+        $chart['doctor_country_counter'] = 1;
 
 
         $payment['payment_method'] = Gateway::count();
@@ -90,7 +76,7 @@ class AdminController extends Controller
         $payment['total_deposit_pending'] = Deposit::where('status',2)->count();
 
 
-        $latestDoctors = Doctor::latest()->limit(6)->get();
+        $latestDoctors = '';
         $empty_message = 'No doctor found';
         return view('admin.dashboard', compact('page_title', 'widget', 'report', 'chart','payment','latestDoctors','empty_message','appointment_all','month_appointment'));
     }

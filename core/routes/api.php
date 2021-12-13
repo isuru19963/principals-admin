@@ -20,6 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('accounts/authenticate', 'MobileAppController@loginAccount');
 Route::post('accounts/push_token', 'MobileAppController@SaveDeviceToken');
 Route::post('accounts/GetUserDetails', 'MobileAppController@getUserDetails');
+Route::post('accounts/GetUserDetails', 'MobileAppController@getUserDetails');
+Route::post('accounts/UpdateUserDetails', 'MobileAppController@updateUserDetails');
+
 Route::post('appointments/GetAppoinmentsByCoach', 'MobileAppController@getAppointmenDetailsByCoach');
 Route::post('appointments/GetAppoinmentsByPrincipal', 'MobileAppController@getAppointmenDetailsByPrincipal');
 Route::post('appointments/GetAppoinmentsByApptCodePrincipals', 'MobileAppController@getAppointmenDetailsByPrincipalApptCode');
@@ -28,10 +31,20 @@ Route::post('appointments/CoachScheduleManage', 'MobileAppController@scheduleMan
 Route::post('appointments/GetCoachAvailabilityList', 'MobileAppController@getCoachAvailabilityList');
 Route::post('appointments/GetAppointmentTimeSlots', 'MobileAppController@getAppointmentTimeSlots');
 Route::post('appointments/GetCoachList', 'MobileAppController@getCoachList');
+Route::post('appointments/GetPrincipalList', 'MobileAppController@getPrincipalList');
+Route::post('appointments/GetCoachAvailabileSlot', 'MobileAppController@getCoachAvailabilityAppt');
+Route::post('appointments/SavePrincipalAppoinment', 'MobileAppController@savePrincipalAppoinment');
+
+Route::post('chat/GetChatMessage', 'MobileAppController@getChatMessage');
+Route::post('chat/UpdateChatMessage', 'MobileAppController@updateChatMessage');
+
+
 
 Route::post('agora/AgoraTokenGeneration', 'MobileAppController@AgoraTokenGeneration');
 Route::post('library/GetCategories', 'MobileAppController@getCategories');
 Route::post('library/GetLibraryPost', 'MobileAppController@getLibraryPost');
+Route::post('library/GetLibraryPostDailyDose', 'MobileAppController@getLibraryPostDailyDose');
+Route::post('library/GetLibraryPostByID', 'MobileAppController@getLibraryPostByID');
 Route::post('library/GetLibraryPostByID', 'MobileAppController@getLibraryPostByID');
 Route::post('library/GetLibraryPostBySearch', 'MobileAppController@getLibraryPostBySearch');
 

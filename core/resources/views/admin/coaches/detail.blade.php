@@ -22,7 +22,7 @@ $states = json_decode($sectors);
             </div>
             <div class="card b-radius--10 overflow-hidden mt-30 box--shadow1">
                 <div class="card-body">
-                    <h5 class="mb-20 text-muted">@lang('Principal information')</h5>
+                    <h5 class="mb-20 text-muted">@lang('Coach information')</h5>
                     <ul class="list-group">
 
                         {{-- <li class="list-group-item d-flex justify-content-between align-items-center">

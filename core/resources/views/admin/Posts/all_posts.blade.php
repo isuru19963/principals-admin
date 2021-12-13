@@ -71,12 +71,12 @@
 
 
 @push('breadcrumb-plugins')
-    <form action="{{ route('admin.doctors.search', $scope ?? str_replace('admin.doctors.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
+    <!-- <form action="{{ route('admin.posts.search', $scope ?? str_replace('admin.posts.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
         <div class="input-group has_append">
             <input type="text" name="search" class="form-control" placeholder="@lang('Username or email')" value="{{ $search ?? '' }}">
             <div class="input-group-append">
                 <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
-    </form>
+    </form> -->
 @endpush

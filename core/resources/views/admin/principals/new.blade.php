@@ -17,14 +17,14 @@ $states = json_decode($sectors);
                                     <div class="image-upload mt-2">
                                         <div class="thumb">
                                             <div class="avatar-preview">
-                                                <div class="profilePicPreview" style="background-image: url({{ getImage('/',imagePath()['coach']['size']) }})">
-                                                    <button type="button" class="remove-image"><i class="fa fa-times"></i></button>
+                                                <div class="profilePicPreview" hidden id="profilePicPreview" style="background-image: url({{ getImage('/',imagePath()['coach']['size']) }})">
+                                                    <button type="button" class="remove-image" onclick=" $('#profilePicPreview').prop('hidden',true)"><i class="fa fa-times"></i></button>
                                                 </div>
                                             </div>
                                             <div class="avatar-edit">
-                                                <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg" required>
+                                                <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" onchange="$('#profilePicPreview').prop('hidden',false)" accept=".png, .jpg, .jpeg" required>
                                                 <label for="profilePicUpload1" class="bg--success"> @lang('image')</label>
-                                                <small class="mt-2 text-facebook">@lang('Supported files'): <b>@lang('jpeg, jpg, png')</b>. @lang('Image Will be resized to'): <b>{{imagePath()['coach']['size']}}</b> @lang('px').</small>
+                                                <small class="mt-2 text-facebook">@lang('Supported files'): <b>@lang('jpeg, jpg, png')</b>. @lang('Image Will be resized to'): <b>{{imagePath()['principal']['size']}}</b> @lang('px').</small>
                                             </div>
                                         </div>
                                     </div>
@@ -80,6 +80,21 @@ $states = json_decode($sectors);
                                         <div class="form-group">
                                             <label class="form-control-label font-weight-bold">@lang('Confirm Password')</label>
                                             <input type="password" class="form-control" name="password_confirmation" required>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label font-weight-bold">@lang('Title')</label>
+                                            <input type="text" class="form-control" placeholder="@lang('Example : Middle School Principal')" name="title" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-control-label font-weight-bold">@lang('School')</label>
+                                            <input type="text" class="form-control" placeholder="@lang('Example : California High School')" name="school" required>
                                         </div>
                                     </div>
 

@@ -17,6 +17,7 @@ use App\Users;
 use App\DrArticles;
 use App\DrYotube;
 use App\Gallery;
+use Uuid;
 use Illuminate\Support\Facades\Hash;
 
 class ManagePrincipalsController extends Controller
@@ -613,6 +614,7 @@ public function youtubeStore(Request $request){
         //     // 'featured' => $request->featured ? 1 : 0,
         // ]);
         $coach = new Users();
+        $coach->user_code = Uuid::generate(4);
         $coach->profile_image = $principalh_image;
         $coach->user_type =  'principal';
         $coach->first_name =  $request->first_name;
@@ -620,6 +622,8 @@ public function youtubeStore(Request $request){
         $coach->email =  $request->email;
         $coach->mobile_no =  $request->mobile;
         $coach->bio =$request->about;
+        $coach->title = $request->title;
+        $coach->school = $request->school;
         $coach->state =$request->state;
         $coach->district =$request->district;
         $coach->password =  Hash::make($request->password);
@@ -638,7 +642,6 @@ public function youtubeStore(Request $request){
     {
         $page_title = 'Principal Detail';
         $doctor = Users::findOrFail($id);
-        $assistants = Assistant::where('status',1)->latest()->get();
         $sectors = Http::get('https://gist.githubusercontent.com/mshafrir/2646763/raw/8b0dbb93521f5d6889502305335104218454c2bf/states_titlecase.json');
         $locations = Location::latest()->get();
         $total_online_earn = Deposit::where('doctor_id',$doctor->id)->where('status',1)->sum('amount');
@@ -646,7 +649,7 @@ public function youtubeStore(Request $request){
         $appointment_done = Appointment::where('doctor_id',$doctor->id)->where('try',1)->where('is_complete',1)->count();
         $appointment_trashed = Appointment::where('doctor_id',$doctor->id)->where('d_status',1)->count();
         $total_appointment = Appointment::where('doctor_id',$doctor->id)->where('try',1)->count();
-        return view('admin.principals.detail', compact('page_title', 'doctor','assistants','sectors','locations','total_online_earn','total_cash_earn','appointment_done','total_appointment','appointment_trashed'));
+        return view('admin.principals.detail', compact('page_title', 'doctor','sectors','locations','total_online_earn','total_cash_earn','appointment_done','total_appointment','appointment_trashed'));
     }
 
     public function update(Request $request, $id)

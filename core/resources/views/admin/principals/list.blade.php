@@ -28,7 +28,7 @@
                                             <span class="name">{{$doctor->name}}</span>
                                         </div>
                                     </td>
-                                    <td data-label="@lang('Username')"><a href="{{ route('admin.doctors.detail', $doctor->id) }}">{{ $doctor->first_name }} {{ $doctor->last_name }}</a></td>
+                                    <td data-label="@lang('Username')"><a href="{{ route('admin.principals.detail', $doctor->id) }}">{{ $doctor->first_name }} {{ $doctor->last_name }}</a></td>
                                     <td data-label="@lang('Email')">{{ $doctor->email }}</td>
                                     <td data-label="@lang('Email')">{{ $doctor->mobile_no }}</td>
                                     {{-- <td data-label="@lang('Total Earn')">{{ round($doctor->balance) }} {{ $general->cur_sym }}</td> --}}
@@ -69,7 +69,7 @@
 
 
 @push('breadcrumb-plugins')
-    <form action="{{ route('admin.doctors.search', $scope ?? str_replace('admin.doctors.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
+    <form action="{{ route('admin.principals.search', $scope ?? str_replace('admin.principals.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
         <div class="input-group has_append">
             <input type="text" name="search" class="form-control" placeholder="@lang('Username or email')" value="{{ $search ?? '' }}">
             <div class="input-group-append">

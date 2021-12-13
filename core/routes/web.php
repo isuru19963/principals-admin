@@ -51,6 +51,13 @@ Route::get('/getDownload/{id}', 'SiteController@getDownload')->name('book.downlo
 | Start Admin Area
 |--------------------------------------------------------------------------
 */
+Route::namespace('admin')->group(function () {
+    Route::namespace('Auth')->group(function () {
+        Route::get('/', 'LoginController@showLoginForm')->name('login');
+    });
+
+}
+);
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
     Route::namespace('Auth')->group(function () {
@@ -74,10 +81,25 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('password', 'AdminController@passwordUpdate')->name('password.update');
 
 
-        //Sector
+        //Sector - Category
         Route::get('sector', 'ManageDoctorsController@sectors')->name('sector');
+        Route::get('category/new_category', 'ManageDoctorsController@newCategory')->name('category.new');
         Route::post('sector/new', 'ManageDoctorsController@storeSectors')->name('sector.store');
+        Route::get('category/detail/{id}', 'ManageDoctorsController@detailCategory')->name('category.detail');
         Route::post('sector/update/{id}', 'ManageDoctorsController@updateSectors')->name('sector.update');
+
+        //Author
+        Route::get('author', 'AuthorController@AllAuthors')->name('author.all');
+        Route::get('author/new', 'AuthorController@newAuthors')->name('author.new');
+        Route::post('author/store', 'AuthorController@storeAuthors')->name('author.store');
+        Route::get('author/detail/{id}', 'AuthorController@detail')->name('author.detail');
+        Route::post('author/update/{id}', 'AuthorController@update')->name('author.update');
+
+        //Video
+        Route::get('my_video', 'AuthorController@AllVideos')->name('my_video.all');
+        Route::get('my_video/new', 'AuthorController@newVideo')->name('my_video.new');
+        Route::post('my_video/store', 'AuthorController@storeVideo')->name('my_video.store');
+
 
         // 
         //Posts
@@ -88,6 +110,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('postsImage/upload', 'PostController@uploadpostsImage')->name('posts.upload');
         Route::post('posts/store', 'PostController@postsStore')->name('posts.store');
         Route::get('posts/detail/{id}', 'PostController@detail')->name('posts.detail');
+        Route::get('posts/download/{name}', 'PostController@postDocDownload')->name('posts.download');
+         Route::get('posts/{scope}/search', 'PostController@search')->name('posts.search');
 
         
         //Sector
@@ -103,19 +127,19 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('location/update/{id}', 'ManageDoctorsController@updatelocations')->name('location.update');
 
         // Doctors Manager
-        Route::get('doctors', 'ManageDoctorsController@allDoctors')->name('doctors.all');
-        Route::get('doctors/new', 'ManageDoctorsController@newDoctor')->name('doctors.new');
-        Route::post('doctors/store', 'ManageDoctorsController@storeDoctor')->name('doctors.store');
-        Route::get('doctor/detail/{id}', 'ManageDoctorsController@detail')->name('doctors.detail');
-        Route::post('doctor/update/{id}', 'ManageDoctorsController@update')->name('doctors.update');
+        // Route::get('doctors', 'ManageDoctorsController@allDoctors')->name('doctors.all');
+        // Route::get('doctors/new', 'ManageDoctorsController@newDoctor')->name('doctors.new');
+        // Route::post('doctors/store', 'ManageDoctorsController@storeDoctor')->name('doctors.store');
+        // Route::get('doctor/detail/{id}', 'ManageDoctorsController@detail')->name('doctors.detail');
+        // Route::post('doctor/update/{id}', 'ManageDoctorsController@update')->name('doctors.update');
 
-        Route::get('doctors/active', 'ManageDoctorsController@activeDoctors')->name('doctors.active');
-        Route::get('doctors/banned', 'ManageDoctorsController@bannedDoctors')->name('doctors.banned');
-        Route::get('doctors/email-verified', 'ManageDoctorsController@emailVerifiedDoctors')->name('doctors.emailVerified');
-        Route::get('doctors/email-unverified', 'ManageDoctorsController@emailUnverifiedDoctors')->name('doctors.emailUnverified');
-        Route::get('doctors/sms-unverified', 'ManageDoctorsController@smsUnverifiedDoctors')->name('doctors.smsUnverified');
-        Route::get('doctors/sms-verified', 'ManageDoctorsController@smsVerifiedDoctors')->name('doctors.smsVerified');
-        Route::get('doctors/{scope}/search', 'ManageDoctorsController@search')->name('doctors.search');
+        // Route::get('doctors/active', 'ManageDoctorsController@activeDoctors')->name('doctors.active');
+        // Route::get('doctors/banned', 'ManageDoctorsController@bannedDoctors')->name('doctors.banned');
+        // Route::get('doctors/email-verified', 'ManageDoctorsController@emailVerifiedDoctors')->name('doctors.emailVerified');
+        // Route::get('doctors/email-unverified', 'ManageDoctorsController@emailUnverifiedDoctors')->name('doctors.emailUnverified');
+        // Route::get('doctors/sms-unverified', 'ManageDoctorsController@smsUnverifiedDoctors')->name('doctors.smsUnverified');
+        // Route::get('doctors/sms-verified', 'ManageDoctorsController@smsVerifiedDoctors')->name('doctors.smsVerified');
+        // Route::get('doctors/{scope}/search', 'ManageDoctorsController@search')->name('doctors.search');
 
         // Coaches Manager
         Route::get('coaches', 'ManageCoachesController@allCoaches')->name('coaches.all');
@@ -149,89 +173,89 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
 
         //Doctor Login History
-        Route::get('doctors/login/history/{id}', 'ManageDoctorsController@doctorLoginHistory')->name('doctors.login.history.single');
-        Route::get('doctors/login/history', 'ManageDoctorsController@loginHistory')->name('doctors.login.history');
-        Route::get('doctors/login/ipHistory/{ip}', 'ManageDoctorsController@loginIpHistory')->name('doctors.login.ipHistory');
+        // Route::get('doctors/login/history/{id}', 'ManageDoctorsController@doctorLoginHistory')->name('doctors.login.history.single');
+        // Route::get('doctors/login/history', 'ManageDoctorsController@loginHistory')->name('doctors.login.history');
+        // Route::get('doctors/login/ipHistory/{ip}', 'ManageDoctorsController@loginIpHistory')->name('doctors.login.ipHistory');
 
-        Route::get('doctors/send-email', 'ManageDoctorsController@showEmailAllForm')->name('doctors.email.all');
-        Route::post('doctors/send-email', 'ManageDoctorsController@sendEmailAll')->name('doctors.email.send');
-        Route::get('doctor/send-email/{id}', 'ManageDoctorsController@showEmailSingleForm')->name('doctors.email.single');
-        Route::post('doctor/send-email/{id}', 'ManageDoctorsController@sendEmailSingle')->name('doctors.email.single');
+        // Route::get('doctors/send-email', 'ManageDoctorsController@showEmailAllForm')->name('doctors.email.all');
+        // Route::post('doctors/send-email', 'ManageDoctorsController@sendEmailAll')->name('doctors.email.send');
+        // Route::get('doctor/send-email/{id}', 'ManageDoctorsController@showEmailSingleForm')->name('doctors.email.single');
+        // Route::post('doctor/send-email/{id}', 'ManageDoctorsController@sendEmailSingle')->name('doctors.email.single');
 
         // Assistant Manager
-        Route::get('assistants', 'ManageAssistantController@allAssistants')->name('assistants.all');
-        Route::get('assistant/new', 'ManageAssistantController@newAssistant')->name('assistants.new');
-        Route::post('assistant/store', 'ManageAssistantController@storeAssistant')->name('assistants.store');
-        Route::get('assistant/detail/{id}', 'ManageAssistantController@detail')->name('assistants.detail');
-        Route::post('assistant/update/{id}', 'ManageAssistantController@update')->name('assistants.update');
+        // Route::get('assistants', 'ManageAssistantController@allAssistants')->name('assistants.all');
+        // Route::get('assistant/new', 'ManageAssistantController@newAssistant')->name('assistants.new');
+        // Route::post('assistant/store', 'ManageAssistantController@storeAssistant')->name('assistants.store');
+        // Route::get('assistant/detail/{id}', 'ManageAssistantController@detail')->name('assistants.detail');
+        // Route::post('assistant/update/{id}', 'ManageAssistantController@update')->name('assistants.update');
 
-        Route::get('assistants/active', 'ManageAssistantController@activeAssistants')->name('assistants.active');
-        Route::get('assistants/banned', 'ManageAssistantController@bannedAssistants')->name('assistants.banned');
-        Route::get('assistants/email-verified', 'ManageAssistantController@emailVerifiedAssistants')->name('assistants.emailVerified');
-        Route::get('assistants/email-unverified', 'ManageAssistantController@emailUnverifiedAssistants')->name('assistants.emailUnverified');
-        Route::get('assistants/sms-unverified', 'ManageAssistantController@smsUnverifiedAssistants')->name('assistants.smsUnverified');
-        Route::get('assistants/sms-verified', 'ManageAssistantController@smsVerifiedAssistants')->name('assistants.smsVerified');
-        Route::get('assistants/{scope}/search', 'ManageAssistantController@search')->name('assistants.search');
+        // Route::get('assistants/active', 'ManageAssistantController@activeAssistants')->name('assistants.active');
+        // Route::get('assistants/banned', 'ManageAssistantController@bannedAssistants')->name('assistants.banned');
+        // Route::get('assistants/email-verified', 'ManageAssistantController@emailVerifiedAssistants')->name('assistants.emailVerified');
+        // Route::get('assistants/email-unverified', 'ManageAssistantController@emailUnverifiedAssistants')->name('assistants.emailUnverified');
+        // Route::get('assistants/sms-unverified', 'ManageAssistantController@smsUnverifiedAssistants')->name('assistants.smsUnverified');
+        // Route::get('assistants/sms-verified', 'ManageAssistantController@smsVerifiedAssistants')->name('assistants.smsVerified');
+        // Route::get('assistants/{scope}/search', 'ManageAssistantController@search')->name('assistants.search');
 
-        //Assiatant Login History
-        Route::get('assistants/login/history/{id}', 'ManageAssistantController@assistantLoginHistory')->name('assistants.login.history.single');
-        Route::get('assistants/login/history', 'ManageAssistantController@loginHistory')->name('assistants.login.history');
-        Route::get('assistants/login/ipHistory/{ip}', 'ManageAssistantController@loginIpHistory')->name('assistants.login.ipHistory');
+        // //Assiatant Login History
+        // Route::get('assistants/login/history/{id}', 'ManageAssistantController@assistantLoginHistory')->name('assistants.login.history.single');
+        // Route::get('assistants/login/history', 'ManageAssistantController@loginHistory')->name('assistants.login.history');
+        // Route::get('assistants/login/ipHistory/{ip}', 'ManageAssistantController@loginIpHistory')->name('assistants.login.ipHistory');
 
-        Route::get('assistants/send-email', 'ManageAssistantController@showEmailAllForm')->name('assistants.email.all');
-        Route::post('assistants/send-email', 'ManageAssistantController@sendEmailAll')->name('assistants.email.send');
-        Route::get('assistant/send-email/{id}', 'ManageAssistantController@showEmailSingleForm')->name('assistants.email.single');
-        Route::post('assistant/send-email/{id}', 'ManageAssistantController@sendEmailSingle')->name('assistants.email.single');
+        // Route::get('assistants/send-email', 'ManageAssistantController@showEmailAllForm')->name('assistants.email.all');
+        // Route::post('assistants/send-email', 'ManageAssistantController@sendEmailAll')->name('assistants.email.send');
+        // Route::get('assistant/send-email/{id}', 'ManageAssistantController@showEmailSingleForm')->name('assistants.email.single');
+        // Route::post('assistant/send-email/{id}', 'ManageAssistantController@sendEmailSingle')->name('assistants.email.single');
 
-        // Staff Manager
-        Route::get('staff', 'ManageStaffController@allStaff')->name('staff.all');
-        Route::get('staff/new', 'ManageStaffController@newStaff')->name('staff.new');
-        Route::post('staff/store', 'ManageStaffController@storeStaff')->name('staff.store');
-        Route::get('staff/detail/{id}', 'ManageStaffController@detail')->name('staff.detail');
-        Route::post('staff/update/{id}', 'ManageStaffController@update')->name('staff.update');
+        // // Staff Manager
+        // Route::get('staff', 'ManageStaffController@allStaff')->name('staff.all');
+        // Route::get('staff/new', 'ManageStaffController@newStaff')->name('staff.new');
+        // Route::post('staff/store', 'ManageStaffController@storeStaff')->name('staff.store');
+        // Route::get('staff/detail/{id}', 'ManageStaffController@detail')->name('staff.detail');
+        // Route::post('staff/update/{id}', 'ManageStaffController@update')->name('staff.update');
 
-        Route::get('staff/active', 'ManageStaffController@activeStaff')->name('staff.active');
-        Route::get('staff/banned', 'ManageStaffController@bannedStaff')->name('staff.banned');
-        Route::get('staff/email-verified', 'ManageStaffController@emailVerifiedStaff')->name('staff.emailVerified');
-        Route::get('staff/email-unverified', 'ManageStaffController@emailUnverifiedStaff')->name('staff.emailUnverified');
-        Route::get('staff/sms-unverified', 'ManageStaffController@smsUnverifiedStaff')->name('staff.smsUnverified');
-        Route::get('staff/sms-verified', 'ManageStaffController@smsVerifiedStaff')->name('staff.smsVerified');
-        Route::get('staff/{scope}/search', 'ManageStaffController@search')->name('staff.search');
+        // Route::get('staff/active', 'ManageStaffController@activeStaff')->name('staff.active');
+        // Route::get('staff/banned', 'ManageStaffController@bannedStaff')->name('staff.banned');
+        // Route::get('staff/email-verified', 'ManageStaffController@emailVerifiedStaff')->name('staff.emailVerified');
+        // Route::get('staff/email-unverified', 'ManageStaffController@emailUnverifiedStaff')->name('staff.emailUnverified');
+        // Route::get('staff/sms-unverified', 'ManageStaffController@smsUnverifiedStaff')->name('staff.smsUnverified');
+        // Route::get('staff/sms-verified', 'ManageStaffController@smsVerifiedStaff')->name('staff.smsVerified');
+        // Route::get('staff/{scope}/search', 'ManageStaffController@search')->name('staff.search');
 
-        //Staff Login History
-        Route::get('staff/login/history/{id}', 'ManageStaffController@staffLoginHistory')->name('staff.login.history.single');
-        Route::get('staff/login/history', 'ManageStaffController@loginHistory')->name('staff.login.history');
-        Route::get('staff/login/ipHistory/{ip}', 'ManageStaffController@loginIpHistory')->name('staff.login.ipHistory');
+        // //Staff Login History
+        // Route::get('staff/login/history/{id}', 'ManageStaffController@staffLoginHistory')->name('staff.login.history.single');
+        // Route::get('staff/login/history', 'ManageStaffController@loginHistory')->name('staff.login.history');
+        // Route::get('staff/login/ipHistory/{ip}', 'ManageStaffController@loginIpHistory')->name('staff.login.ipHistory');
 
-        Route::get('staff/send-email', 'ManageStaffController@showEmailAllForm')->name('staff.email.all');
-        Route::post('staff/send-email', 'ManageStaffController@sendEmailAll')->name('staff.email.send');
-        Route::get('staff/send-email/{id}', 'ManageStaffController@showEmailSingleForm')->name('staff.email.single');
-        Route::post('staff/send-email/{id}', 'ManageStaffController@sendEmailSingle')->name('staff.email.single');
+        // Route::get('staff/send-email', 'ManageStaffController@showEmailAllForm')->name('staff.email.all');
+        // Route::post('staff/send-email', 'ManageStaffController@sendEmailAll')->name('staff.email.send');
+        // Route::get('staff/send-email/{id}', 'ManageStaffController@showEmailSingleForm')->name('staff.email.single');
+        // Route::post('staff/send-email/{id}', 'ManageStaffController@sendEmailSingle')->name('staff.email.single');
 
-        //Patient Manager
-        Route::get('patient', 'ManagePatientController@allPatient')->name('patient.all');
-        Route::get('patient/new', 'ManagePatientController@newPatient')->name('patient.new');
-        Route::post('patient/store', 'ManagePatientController@storePatient')->name('patient.store');
-        Route::get('patient/detail/{id}', 'ManagePatientController@detail')->name('patient.detail');
-        Route::post('patient/update/{id}', 'ManagePatientController@update')->name('patient.update');
+        // //Patient Manager
+        // Route::get('patient', 'ManagePatientController@allPatient')->name('patient.all');
+        // Route::get('patient/new', 'ManagePatientController@newPatient')->name('patient.new');
+        // Route::post('patient/store', 'ManagePatientController@storePatient')->name('patient.store');
+        // Route::get('patient/detail/{id}', 'ManagePatientController@detail')->name('patient.detail');
+        // Route::post('patient/update/{id}', 'ManagePatientController@update')->name('patient.update');
 
-        Route::get('patient/active', 'ManagePatientController@activePatient')->name('patient.active');
-        Route::get('patient/banned', 'ManagePatientController@bannedPatient')->name('patient.banned');
-        Route::get('patient/email-verified', 'ManagePatientController@emailVerifiedPatient')->name('patient.emailVerified');
-        Route::get('patient/email-unverified', 'ManagePatientController@emailUnverifiedPatient')->name('patient.emailUnverified');
-        Route::get('patient/sms-unverified', 'ManagePatientController@smsUnverifiedPatient')->name('patient.smsUnverified');
-        Route::get('patient/sms-verified', 'ManagePatientController@smsVerifiedPatient')->name('patient.smsVerified');
-        Route::get('patient/{scope}/search', 'ManagePatientController@search')->name('patient.search');
+        // Route::get('patient/active', 'ManagePatientController@activePatient')->name('patient.active');
+        // Route::get('patient/banned', 'ManagePatientController@bannedPatient')->name('patient.banned');
+        // Route::get('patient/email-verified', 'ManagePatientController@emailVerifiedPatient')->name('patient.emailVerified');
+        // Route::get('patient/email-unverified', 'ManagePatientController@emailUnverifiedPatient')->name('patient.emailUnverified');
+        // Route::get('patient/sms-unverified', 'ManagePatientController@smsUnverifiedPatient')->name('patient.smsUnverified');
+        // Route::get('patient/sms-verified', 'ManagePatientController@smsVerifiedPatient')->name('patient.smsVerified');
+        // Route::get('patient/{scope}/search', 'ManagePatientController@search')->name('patient.search');
 
-        //Patient Login History
-        Route::get('patient/login/history/{id}', 'ManagePatientController@staffLoginHistory')->name('patient.login.history.single');
-        Route::get('patient/login/history', 'ManagePatientController@loginHistory')->name('patient.login.history');
-        Route::get('patient/login/ipHistory/{ip}', 'ManagePatientController@loginIpHistory')->name('patient.login.ipHistory');
+        // //Patient Login History
+        // Route::get('patient/login/history/{id}', 'ManagePatientController@staffLoginHistory')->name('patient.login.history.single');
+        // Route::get('patient/login/history', 'ManagePatientController@loginHistory')->name('patient.login.history');
+        // Route::get('patient/login/ipHistory/{ip}', 'ManagePatientController@loginIpHistory')->name('patient.login.ipHistory');
 
-        Route::get('patient/send-email', 'ManagePatientController@showEmailAllForm')->name('patient.email.all');
-        Route::post('patient/send-email', 'ManagePatientController@sendEmailAll')->name('patient.email.send');
-        Route::get('patient/send-email/{id}', 'ManagePatientController@showEmailSingleForm')->name('patient.email.single');
-        Route::post('patient/send-email/{id}', 'ManagePatientController@sendEmailSingle')->name('patient.email.single');
+        // Route::get('patient/send-email', 'ManagePatientController@showEmailAllForm')->name('patient.email.all');
+        // Route::post('patient/send-email', 'ManagePatientController@sendEmailAll')->name('patient.email.send');
+        // Route::get('patient/send-email/{id}', 'ManagePatientController@showEmailSingleForm')->name('patient.email.single');
+        // Route::post('patient/send-email/{id}', 'ManagePatientController@sendEmailSingle')->name('patient.email.single');
 
         //Create Appointment
         Route::get('create/appointment', 'AppointmentController@createAppointment')->name('appointments.create');
@@ -377,112 +401,112 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::namespace('Doctor')->prefix('doctor')->name('doctor.')->group(function () {
-    Route::namespace('Auth')->group(function () {
-        Route::post('/', 'LoginController@login')->name('login');
-        Route::get('logout', 'LoginController@logout')->name('logout');
+// Route::namespace('Doctor')->prefix('doctor')->name('doctor.')->group(function () {
+//     Route::namespace('Auth')->group(function () {
+//         Route::post('/', 'LoginController@login')->name('login');
+//         Route::get('logout', 'LoginController@logout')->name('logout');
 
-        // Doctor Password Reset
-        Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-        Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
-        Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
-        Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
-        Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
-    });
+//         // Doctor Password Reset
+//         Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+//         Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
+//         Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
+//         Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
+//         Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
+//     });
 
-});
-
-
-Route::namespace('Doctor')->name('doctor.')->prefix('doctor')->group(function () {
-    Route::middleware('doctor')->group(function () {
-        Route::get('authorization', 'DoctorAuthorizationController@authorizeForm')->name('authorization');
-        Route::get('resend-verify', 'DoctorAuthorizationController@sendVerifyCode')->name('send_verify_code');
-        Route::post('verify-email', 'DoctorAuthorizationController@emailVerification')->name('verify_email');
-        Route::post('verify-sms', 'DoctorAuthorizationController@smsVerification')->name('verify_sms');
-        Route::post('verify-g2fa', 'DoctorAuthorizationController@g2faVerification')->name('go2fa.verify');
-
-        Route::middleware(['checkDoctorStatus'])->group(function () {
-            Route::get('dashboard', 'DoctorController@dashboard')->name('dashboard');
-            Route::get('profile', 'DoctorController@profile')->name('profile');
-            Route::post('doctorprofile/update', 'DoctorController@profileUpdate')->name('profile.update');
-            Route::post('doctor/update', 'DoctorController@updateDoctor')->name('doctorprofile.update');
-            Route::get('password', 'DoctorController@password')->name('password');
-            Route::post('password/update', 'DoctorController@passwordUpdate')->name('password.update');
-
-            //2FA
-            Route::get('twofactor', 'DoctorController@show2faForm')->name('twofactor');
-            Route::post('twofactor/enable', 'DoctorController@create2fa')->name('twofactor.enable');
-            Route::post('twofactor/disable', 'DoctorController@disable2fa')->name('twofactor.disable');
-
-            //About
-            Route::get('about', 'DoctorController@about')->name('about');
-            Route::post('about/update', 'DoctorController@aboutUpdate')->name('about.update');
-
-            //Education
-            Route::get('education/all', 'DoctorController@educationAll')->name('education');
-            Route::post('education/store', 'DoctorController@educationStore')->name('education.store');
-            Route::post('education/update/{id}', 'DoctorController@educationUpdate')->name('education.update');
-            Route::delete('education/remove/{id}', 'DoctorController@educationRemove')->name('education.remove');
-
-            //Prescription
-            Route::get('prescription/all', 'DoctorController@prescriptionAll')->name('prescription');
-            Route::post('prescription/update/{id}', 'DoctorController@prescriptionUpdate')->name('prescription.update');
-            Route::delete('prescription/remove/{id}', 'DoctorController@prescriptionRemove')->name('prescription.remove');
-            Route::get('prescription/viewmore/{id}', 'DoctorController@prescriptionData')->name('prescription.viewmore');
+// });
 
 
-            //Articles
-            Route::get('articles/all', 'DoctorController@articlesAll')->name('articles');
-            Route::post('articles/update/{id}', 'DoctorController@articlesUpdate')->name('articles.update');
-            Route::delete('articles/remove/{id}', 'DoctorController@articlesRemove')->name('articles.remove');
-            Route::post('articleImage/upload', 'DoctorController@uploadArticleImage')->name('articles.upload');
-            Route::post('articles/store', 'DoctorController@articleStore')->name('articles.store');
+// Route::namespace('Doctor')->name('doctor.')->prefix('doctor')->group(function () {
+//     Route::middleware('doctor')->group(function () {
+//         Route::get('authorization', 'DoctorAuthorizationController@authorizeForm')->name('authorization');
+//         Route::get('resend-verify', 'DoctorAuthorizationController@sendVerifyCode')->name('send_verify_code');
+//         Route::post('verify-email', 'DoctorAuthorizationController@emailVerification')->name('verify_email');
+//         Route::post('verify-sms', 'DoctorAuthorizationController@smsVerification')->name('verify_sms');
+//         Route::post('verify-g2fa', 'DoctorAuthorizationController@g2faVerification')->name('go2fa.verify');
 
-             //Youtube
-            Route::get('youtube/all', 'DoctorController@youtubeAll')->name('youtube');
-            Route::post('youtube/update/{id}', 'DoctorController@youtubeUpdate')->name('youtube.update');
-            Route::delete('youtube/remove/{id}', 'DoctorController@youtubeRemove')->name('youtube.remove');
-            Route::post('youtubeImage/upload', 'DoctorController@youtubeImage')->name('youtube.upload');
-            Route::post('youtube/store', 'DoctorController@youtubeStore')->name('youtube.store');
+//         Route::middleware(['checkDoctorStatus'])->group(function () {
+//             Route::get('dashboard', 'DoctorController@dashboard')->name('dashboard');
+//             Route::get('profile', 'DoctorController@profile')->name('profile');
+//             Route::post('doctorprofile/update', 'DoctorController@profileUpdate')->name('profile.update');
+//             Route::post('doctor/update', 'DoctorController@updateDoctor')->name('doctorprofile.update');
+//             Route::get('password', 'DoctorController@password')->name('password');
+//             Route::post('password/update', 'DoctorController@passwordUpdate')->name('password.update');
 
-            //Experience
-            Route::get('experience/all', 'DoctorController@experienceAll')->name('experience');
-            Route::post('experience/store', 'DoctorController@experienceStore')->name('experience.store');
-            Route::post('experience/update/{id}', 'DoctorController@experienceUpdate')->name('experience.update');
-            Route::delete('experience/remove/{id}', 'DoctorController@experienceRemove')->name('experience.remove');
+//             //2FA
+//             Route::get('twofactor', 'DoctorController@show2faForm')->name('twofactor');
+//             Route::post('twofactor/enable', 'DoctorController@create2fa')->name('twofactor.enable');
+//             Route::post('twofactor/disable', 'DoctorController@disable2fa')->name('twofactor.disable');
 
-            //Appointment
-            Route::get('appointment', 'DoctorController@allAppointment')->name('appointment');
-            Route::post('appointment/view/{id}', 'DoctorController@appointmentView')->name('appointment.view');
-            Route::get('appointment/done', 'DoctorController@appointmentDone')->name('appointment.done');
-            Route::post('appointment/remove/{id}', 'DoctorController@appointmentRemove')->name('appointment.remove');
-            Route::get('appointment/trashed', 'DoctorController@appointmentTrashed')->name('appointment.trashed');
+//             //About
+//             Route::get('about', 'DoctorController@about')->name('about');
+//             Route::post('about/update', 'DoctorController@aboutUpdate')->name('about.update');
+
+//             //Education
+//             Route::get('education/all', 'DoctorController@educationAll')->name('education');
+//             Route::post('education/store', 'DoctorController@educationStore')->name('education.store');
+//             Route::post('education/update/{id}', 'DoctorController@educationUpdate')->name('education.update');
+//             Route::delete('education/remove/{id}', 'DoctorController@educationRemove')->name('education.remove');
+
+//             //Prescription
+//             Route::get('prescription/all', 'DoctorController@prescriptionAll')->name('prescription');
+//             Route::post('prescription/update/{id}', 'DoctorController@prescriptionUpdate')->name('prescription.update');
+//             Route::delete('prescription/remove/{id}', 'DoctorController@prescriptionRemove')->name('prescription.remove');
+//             Route::get('prescription/viewmore/{id}', 'DoctorController@prescriptionData')->name('prescription.viewmore');
+
+
+//             //Articles
+//             Route::get('articles/all', 'DoctorController@articlesAll')->name('articles');
+//             Route::post('articles/update/{id}', 'DoctorController@articlesUpdate')->name('articles.update');
+//             Route::delete('articles/remove/{id}', 'DoctorController@articlesRemove')->name('articles.remove');
+//             Route::post('articleImage/upload', 'DoctorController@uploadArticleImage')->name('articles.upload');
+//             Route::post('articles/store', 'DoctorController@articleStore')->name('articles.store');
+
+//              //Youtube
+//             Route::get('youtube/all', 'DoctorController@youtubeAll')->name('youtube');
+//             Route::post('youtube/update/{id}', 'DoctorController@youtubeUpdate')->name('youtube.update');
+//             Route::delete('youtube/remove/{id}', 'DoctorController@youtubeRemove')->name('youtube.remove');
+//             Route::post('youtubeImage/upload', 'DoctorController@youtubeImage')->name('youtube.upload');
+//             Route::post('youtube/store', 'DoctorController@youtubeStore')->name('youtube.store');
+
+//             //Experience
+//             Route::get('experience/all', 'DoctorController@experienceAll')->name('experience');
+//             Route::post('experience/store', 'DoctorController@experienceStore')->name('experience.store');
+//             Route::post('experience/update/{id}', 'DoctorController@experienceUpdate')->name('experience.update');
+//             Route::delete('experience/remove/{id}', 'DoctorController@experienceRemove')->name('experience.remove');
+
+//             //Appointment
+//             Route::get('appointment', 'DoctorController@allAppointment')->name('appointment');
+//             Route::post('appointment/view/{id}', 'DoctorController@appointmentView')->name('appointment.view');
+//             Route::get('appointment/done', 'DoctorController@appointmentDone')->name('appointment.done');
+//             Route::post('appointment/remove/{id}', 'DoctorController@appointmentRemove')->name('appointment.remove');
+//             Route::get('appointment/trashed', 'DoctorController@appointmentTrashed')->name('appointment.trashed');
 
 
 
-            //Create Appointment
-            Route::get('create/appointment', 'DoctorController@appointmentDetails')->name('appointments.create');
-            Route::get('booked_date/appointment', 'DoctorController@bookedDate')->name('appointments.booked.date');
-            Route::post('store/appointment', 'DoctorController@appointmentStore')->name('appointments.store');
+//             //Create Appointment
+//             Route::get('create/appointment', 'DoctorController@appointmentDetails')->name('appointments.create');
+//             Route::get('booked_date/appointment', 'DoctorController@bookedDate')->name('appointments.booked.date');
+//             Route::post('store/appointment', 'DoctorController@appointmentStore')->name('appointments.store');
 
-            //Schedule Manage
-            Route::get('schedule', 'DoctorController@schedule')->name('schedule');
-            Route::post('schedule/manage}', 'DoctorController@scheduleManage')->name('schedule.slot');
+//             //Schedule Manage
+//             Route::get('schedule', 'DoctorController@schedule')->name('schedule');
+//             Route::post('schedule/manage}', 'DoctorController@scheduleManage')->name('schedule.slot');
 
-            //Social Icon
-            Route::get('social-icon/all', 'DoctorController@socialIcon')->name('social.icon');
-            Route::post('social-icon/store', 'DoctorController@socialIconStore')->name('social.icon.store');
-            Route::post('social-icon/update/{id}', 'DoctorController@socialIconUpdate')->name('social.icon.update');
-            Route::delete('social-icon/remove/{id}', 'DoctorController@socialIconRemove')->name('social.icon.remove');
+//             //Social Icon
+//             Route::get('social-icon/all', 'DoctorController@socialIcon')->name('social.icon');
+//             Route::post('social-icon/store', 'DoctorController@socialIconStore')->name('social.icon.store');
+//             Route::post('social-icon/update/{id}', 'DoctorController@socialIconUpdate')->name('social.icon.update');
+//             Route::delete('social-icon/remove/{id}', 'DoctorController@socialIconRemove')->name('social.icon.remove');
 
-            //Speciality Icon
-            Route::get('speciality/all', 'DoctorController@speciality')->name('speciality');
-            Route::post('speciality/update', 'DoctorController@specialityUpdate')->name('speciality.update');
-        });
+//             //Speciality Icon
+//             Route::get('speciality/all', 'DoctorController@speciality')->name('speciality');
+//             Route::post('speciality/update', 'DoctorController@specialityUpdate')->name('speciality.update');
+//         });
 
-    });
+//     });
 
-});
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -491,59 +515,59 @@ Route::namespace('Doctor')->name('doctor.')->prefix('doctor')->group(function ()
 */
 
 
-Route::namespace('Assistant')->prefix('assistant')->name('assistant.')->group(function () {
-    Route::namespace('Auth')->group(function () {
-        Route::post('/', 'LoginController@login')->name('login');
-        Route::get('logout', 'LoginController@logout')->name('logout');
+// Route::namespace('Assistant')->prefix('assistant')->name('assistant.')->group(function () {
+//     Route::namespace('Auth')->group(function () {
+//         Route::post('/', 'LoginController@login')->name('login');
+//         Route::get('logout', 'LoginController@logout')->name('logout');
 
-        // Assistant Password Reset
-        Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-        Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
-        Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
-        Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
-        Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
-    });
-});
+//         // Assistant Password Reset
+//         Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+//         Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
+//         Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
+//         Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
+//         Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
+//     });
+// });
 
-Route::namespace('Assistant')->name('assistant.')->prefix('assistant')->group(function () {
-    Route::middleware('assistant')->group(function () {
-        Route::get('authorization', 'AssistantAuthorizationController@authorizeForm')->name('authorization');
-        Route::get('resend-verify', 'AssistantAuthorizationController@sendVerifyCode')->name('send_verify_code');
-        Route::post('verify-email', 'AssistantAuthorizationController@emailVerification')->name('verify_email');
-        Route::post('verify-sms', 'AssistantAuthorizationController@smsVerification')->name('verify_sms');
-        Route::post('verify-g2fa', 'AssistantAuthorizationController@g2faVerification')->name('go2fa.verify');
+// Route::namespace('Assistant')->name('assistant.')->prefix('assistant')->group(function () {
+//     Route::middleware('assistant')->group(function () {
+//         Route::get('authorization', 'AssistantAuthorizationController@authorizeForm')->name('authorization');
+//         Route::get('resend-verify', 'AssistantAuthorizationController@sendVerifyCode')->name('send_verify_code');
+//         Route::post('verify-email', 'AssistantAuthorizationController@emailVerification')->name('verify_email');
+//         Route::post('verify-sms', 'AssistantAuthorizationController@smsVerification')->name('verify_sms');
+//         Route::post('verify-g2fa', 'AssistantAuthorizationController@g2faVerification')->name('go2fa.verify');
 
-        Route::middleware(['checkAssistantStatus'])->group(function () {
-            Route::get('dashboard', 'AssistantController@dashboard')->name('dashboard');
-            Route::get('profile', 'AssistantController@profile')->name('profile');
-            Route::post('profile/update', 'AssistantController@profileUpdate')->name('profile.update');
-            Route::get('password', 'AssistantController@password')->name('password');
-            Route::post('password/update', 'AssistantController@passwordUpdate')->name('password.update');
+//         Route::middleware(['checkAssistantStatus'])->group(function () {
+//             Route::get('dashboard', 'AssistantController@dashboard')->name('dashboard');
+//             Route::get('profile', 'AssistantController@profile')->name('profile');
+//             Route::post('profile/update', 'AssistantController@profileUpdate')->name('profile.update');
+//             Route::get('password', 'AssistantController@password')->name('password');
+//             Route::post('password/update', 'AssistantController@passwordUpdate')->name('password.update');
 
-            //2FA
-            Route::get('twofactor', 'AssistantController@show2faForm')->name('twofactor');
-            Route::post('twofactor/enable', 'AssistantController@create2fa')->name('twofactor.enable');
-            Route::post('twofactor/disable', 'AssistantController@disable2fa')->name('twofactor.disable');
+//             //2FA
+//             Route::get('twofactor', 'AssistantController@show2faForm')->name('twofactor');
+//             Route::post('twofactor/enable', 'AssistantController@create2fa')->name('twofactor.enable');
+//             Route::post('twofactor/disable', 'AssistantController@disable2fa')->name('twofactor.disable');
 
-            //Appointment
-            Route::get('appointment/doctor/{id}', 'AssistantController@doctorAppointment')->name('doctor.appointment.view');
-            Route::post('appointment/view/{id}', 'AssistantController@appointmentView')->name('appointment.view');
-            Route::get('appointment/doctor/done/{id}', 'AssistantController@appointmentDone')->name('doctor.appointment.done');
-            Route::post('appointment/remove/{id}', 'AssistantController@appointmentRemove')->name('appointment.remove');
-            Route::get('appointment/doctor/trashed/{id}', 'AssistantController@appointmentTrashed')->name('doctor.appointment.trashed');
+//             //Appointment
+//             Route::get('appointment/doctor/{id}', 'AssistantController@doctorAppointment')->name('doctor.appointment.view');
+//             Route::post('appointment/view/{id}', 'AssistantController@appointmentView')->name('appointment.view');
+//             Route::get('appointment/doctor/done/{id}', 'AssistantController@appointmentDone')->name('doctor.appointment.done');
+//             Route::post('appointment/remove/{id}', 'AssistantController@appointmentRemove')->name('appointment.remove');
+//             Route::get('appointment/doctor/trashed/{id}', 'AssistantController@appointmentTrashed')->name('doctor.appointment.trashed');
 
-             //Create Appointment
-             Route::get('create/appointment', 'AssistantController@createAppointment')->name('appointments.create');
-             Route::get('details/appointment', 'AssistantController@appointmentDetails')->name('appointments.book.details');
-             Route::get('booked_date/appointment', 'AssistantController@bookedDate')->name('appointments.booked.date');
-             Route::post('store/appointment/{id}', 'AssistantController@appointmentStore')->name('appointments.store');
+//              //Create Appointment
+//              Route::get('create/appointment', 'AssistantController@createAppointment')->name('appointments.create');
+//              Route::get('details/appointment', 'AssistantController@appointmentDetails')->name('appointments.book.details');
+//              Route::get('booked_date/appointment', 'AssistantController@bookedDate')->name('appointments.booked.date');
+//              Route::post('store/appointment/{id}', 'AssistantController@appointmentStore')->name('appointments.store');
 
-            //Doctors
-            Route::get('doctors', 'AssistantController@allDoctors')->name('doctors');
+//             //Doctors
+//             Route::get('doctors', 'AssistantController@allDoctors')->name('doctors');
 
-        });
-    });
-});
+//         });
+//     });
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -552,58 +576,58 @@ Route::namespace('Assistant')->name('assistant.')->prefix('assistant')->group(fu
 */
 
 
-Route::namespace('Staff')->prefix('staff')->name('staff.')->group(function () {
-    Route::namespace('Auth')->group(function () {
-        Route::post('/', 'LoginController@login')->name('login');
-        Route::get('logout', 'LoginController@logout')->name('logout');
+// Route::namespace('Staff')->prefix('staff')->name('staff.')->group(function () {
+//     Route::namespace('Auth')->group(function () {
+//         Route::post('/', 'LoginController@login')->name('login');
+//         Route::get('logout', 'LoginController@logout')->name('logout');
 
-        // Staff Password Reset
-        Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-        Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
-        Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
-        Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
-        Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
-    });
-});
+//         // Staff Password Reset
+//         Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+//         Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
+//         Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
+//         Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
+//         Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
+//     });
+// });
 
-Route::namespace('Staff')->name('staff.')->prefix('staff')->group(function () {
-    Route::middleware('staff')->group(function () {
-        Route::get('authorization', 'StaffAuthorizationController@authorizeForm')->name('authorization');
-        Route::get('resend-verify', 'StaffAuthorizationController@sendVerifyCode')->name('send_verify_code');
-        Route::post('verify-email', 'StaffAuthorizationController@emailVerification')->name('verify_email');
-        Route::post('verify-sms', 'StaffAuthorizationController@smsVerification')->name('verify_sms');
-        Route::post('verify-g2fa', 'StaffAuthorizationController@g2faVerification')->name('go2fa.verify');
+// Route::namespace('Staff')->name('staff.')->prefix('staff')->group(function () {
+//     Route::middleware('staff')->group(function () {
+//         Route::get('authorization', 'StaffAuthorizationController@authorizeForm')->name('authorization');
+//         Route::get('resend-verify', 'StaffAuthorizationController@sendVerifyCode')->name('send_verify_code');
+//         Route::post('verify-email', 'StaffAuthorizationController@emailVerification')->name('verify_email');
+//         Route::post('verify-sms', 'StaffAuthorizationController@smsVerification')->name('verify_sms');
+//         Route::post('verify-g2fa', 'StaffAuthorizationController@g2faVerification')->name('go2fa.verify');
 
-        Route::middleware(['checkStaffStatus'])->group(function () {
-            Route::get('dashboard', 'StaffController@dashboard')->name('dashboard');
-            Route::get('profile', 'StaffController@profile')->name('profile');
-            Route::post('profile/update', 'StaffController@profileUpdate')->name('profile.update');
-            Route::get('password', 'StaffController@password')->name('password');
-            Route::post('password/update', 'StaffController@passwordUpdate')->name('password.update');
+//         Route::middleware(['checkStaffStatus'])->group(function () {
+//             Route::get('dashboard', 'StaffController@dashboard')->name('dashboard');
+//             Route::get('profile', 'StaffController@profile')->name('profile');
+//             Route::post('profile/update', 'StaffController@profileUpdate')->name('profile.update');
+//             Route::get('password', 'StaffController@password')->name('password');
+//             Route::post('password/update', 'StaffController@passwordUpdate')->name('password.update');
 
-            //2FA
-            Route::get('twofactor', 'StaffController@show2faForm')->name('twofactor');
-            Route::post('twofactor/enable', 'StaffController@create2fa')->name('twofactor.enable');
-            Route::post('twofactor/disable', 'StaffController@disable2fa')->name('twofactor.disable');
+//             //2FA
+//             Route::get('twofactor', 'StaffController@show2faForm')->name('twofactor');
+//             Route::post('twofactor/enable', 'StaffController@create2fa')->name('twofactor.enable');
+//             Route::post('twofactor/disable', 'StaffController@disable2fa')->name('twofactor.disable');
 
-            Route::get('appointment', 'StaffController@allAppointment')->name('appointments.all');
-            Route::post('appointment/view/{id}', 'StaffController@appointmentView')->name('appointments.view');
-            Route::get('appointment/done', 'StaffController@appointmentDone')->name('done.appointment');
-            Route::post('appointment/remove/{id}', 'StaffController@appointmentRemove')->name('appointments.remove');
-            Route::get('appointment/trashed', 'StaffController@appointmentTrashed')->name('appointments.trashed');
+//             Route::get('appointment', 'StaffController@allAppointment')->name('appointments.all');
+//             Route::post('appointment/view/{id}', 'StaffController@appointmentView')->name('appointments.view');
+//             Route::get('appointment/done', 'StaffController@appointmentDone')->name('done.appointment');
+//             Route::post('appointment/remove/{id}', 'StaffController@appointmentRemove')->name('appointments.remove');
+//             Route::get('appointment/trashed', 'StaffController@appointmentTrashed')->name('appointments.trashed');
 
-            //Create Appointment
-            Route::get('create/appointment', 'StaffController@createAppointment')->name('appointment.create');
-            Route::get('details/appointment', 'StaffController@appointmentDetails')->name('appointment.book.details');
-            Route::get('booked_date/appointment', 'StaffController@bookedDate')->name('appointment.booked.date');
-            Route::post('store/appointment/{id}', 'StaffController@appointmentStore')->name('appointment.store');
+//             //Create Appointment
+//             Route::get('create/appointment', 'StaffController@createAppointment')->name('appointment.create');
+//             Route::get('details/appointment', 'StaffController@appointmentDetails')->name('appointment.book.details');
+//             Route::get('booked_date/appointment', 'StaffController@bookedDate')->name('appointment.booked.date');
+//             Route::post('store/appointment/{id}', 'StaffController@appointmentStore')->name('appointment.store');
 
-            //Doctors
-            Route::get('doctors', 'StaffController@allDoctors')->name('doctors');
+//             //Doctors
+//             Route::get('doctors', 'StaffController@allDoctors')->name('doctors');
 
-        });
-    });
-});
+//         });
+//     });
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -612,59 +636,59 @@ Route::namespace('Staff')->name('staff.')->prefix('staff')->group(function () {
 */
 
 
-Route::namespace('Patient')->prefix('patient')->name('patient.')->group(function () {
-    Route::namespace('Auth')->group(function () {
-        Route::post('/', 'LoginController@login')->name('login');
-        Route::get('logout', 'LoginController@logout')->name('logout');
+// Route::namespace('Patient')->prefix('patient')->name('patient.')->group(function () {
+//     Route::namespace('Auth')->group(function () {
+//         Route::post('/', 'LoginController@login')->name('login');
+//         Route::get('logout', 'LoginController@logout')->name('logout');
 
-        // Staff Password Reset
-        Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-        Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
-        Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
-        Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
-        Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
-    });
-});
+//         // Staff Password Reset
+//         Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+//         Route::post('password/reset', 'ForgotPasswordController@sendResetLinkEmail');
+//         Route::post('password/verify-code', 'ForgotPasswordController@verifyCode')->name('password.verify-code');
+//         Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.change-link');
+//         Route::post('password/reset/change', 'ResetPasswordController@reset')->name('password.change');
+//     });
+// });
 
-Route::namespace('Patient')->name('patient.')->prefix('patient')->group(function () {
-    Route::middleware('patient')->group(function () {
-        Route::get('authorization', 'PatientAuthorizationController@authorizeForm')->name('authorization');
-        Route::get('resend-verify', 'PatientAuthorizationController@sendVerifyCode')->name('send_verify_code');
-        Route::post('verify-email', 'PatientAuthorizationController@emailVerification')->name('verify_email');
-        Route::post('verify-sms', 'PatientAuthorizationController@smsVerification')->name('verify_sms');
-        Route::post('verify-g2fa', 'PatientAuthorizationController@g2faVerification')->name('go2fa.verify');
+// Route::namespace('Patient')->name('patient.')->prefix('patient')->group(function () {
+//     Route::middleware('patient')->group(function () {
+//         Route::get('authorization', 'PatientAuthorizationController@authorizeForm')->name('authorization');
+//         Route::get('resend-verify', 'PatientAuthorizationController@sendVerifyCode')->name('send_verify_code');
+//         Route::post('verify-email', 'PatientAuthorizationController@emailVerification')->name('verify_email');
+//         Route::post('verify-sms', 'PatientAuthorizationController@smsVerification')->name('verify_sms');
+//         Route::post('verify-g2fa', 'PatientAuthorizationController@g2faVerification')->name('go2fa.verify');
 
-        Route::middleware(['checkPatientStatus'])->group(function () {
-            Route::get('dashboard', 'PatientController@dashboard')->name('dashboard');
-            Route::get('profile', 'PatientController@profile')->name('profile');
-            Route::post('profile/update', 'PatientController@profileUpdate')->name('profile.update');
-            Route::post('patientprofile/update', 'PatientController@patientprofileUpdate')->name('patientprofile.update');
-            Route::get('password', 'PatientController@password')->name('password');
-            Route::post('password/update', 'PatientController@passwordUpdate')->name('password.update');
+//         Route::middleware(['checkPatientStatus'])->group(function () {
+//             Route::get('dashboard', 'PatientController@dashboard')->name('dashboard');
+//             Route::get('profile', 'PatientController@profile')->name('profile');
+//             Route::post('profile/update', 'PatientController@profileUpdate')->name('profile.update');
+//             Route::post('patientprofile/update', 'PatientController@patientprofileUpdate')->name('patientprofile.update');
+//             Route::get('password', 'PatientController@password')->name('password');
+//             Route::post('password/update', 'PatientController@passwordUpdate')->name('password.update');
 
-            //2FA
-            Route::get('twofactor', 'PatientController@show2faForm')->name('twofactor');
-            Route::post('twofactor/enable', 'PatientController@create2fa')->name('twofactor.enable');
-            Route::post('twofactor/disable', 'PatientController@disable2fa')->name('twofactor.disable');
+//             //2FA
+//             Route::get('twofactor', 'PatientController@show2faForm')->name('twofactor');
+//             Route::post('twofactor/enable', 'PatientController@create2fa')->name('twofactor.enable');
+//             Route::post('twofactor/disable', 'PatientController@disable2fa')->name('twofactor.disable');
 
-            Route::get('appointment', 'PatientController@allAppointment')->name('appointments.all');
-            Route::post('appointment/view/{id}', 'PatientController@appointmentView')->name('appointments.view');
-            Route::get('appointment/done', 'PatientController@appointmentDone')->name('done.appointment');
-            Route::post('appointment/remove/{id}', 'PatientController@appointmentRemove')->name('appointments.remove');
-            Route::get('appointment/trashed', 'PatientController@appointmentTrashed')->name('appointments.trashed');
+//             Route::get('appointment', 'PatientController@allAppointment')->name('appointments.all');
+//             Route::post('appointment/view/{id}', 'PatientController@appointmentView')->name('appointments.view');
+//             Route::get('appointment/done', 'PatientController@appointmentDone')->name('done.appointment');
+//             Route::post('appointment/remove/{id}', 'PatientController@appointmentRemove')->name('appointments.remove');
+//             Route::get('appointment/trashed', 'PatientController@appointmentTrashed')->name('appointments.trashed');
 
-            //Create Appointment
-            Route::get('create/appointment', 'PatientController@createAppointment')->name('appointment.create');
-            Route::get('details/appointment', 'PatientController@appointmentDetails')->name('appointment.book.details');
-            Route::get('booked_date/appointment', 'PatientController@bookedDate')->name('appointment.booked.date');
-            Route::post('store/appointment/{id}', 'PatientController@appointmentStore')->name('appointment.store');
+//             //Create Appointment
+//             Route::get('create/appointment', 'PatientController@createAppointment')->name('appointment.create');
+//             Route::get('details/appointment', 'PatientController@appointmentDetails')->name('appointment.book.details');
+//             Route::get('booked_date/appointment', 'PatientController@bookedDate')->name('appointment.booked.date');
+//             Route::post('store/appointment/{id}', 'PatientController@appointmentStore')->name('appointment.store');
 
-            //Doctors
-            Route::get('doctors', 'PatientController@allDoctors')->name('doctors');
+//             //Doctors
+//             Route::get('doctors', 'PatientController@allDoctors')->name('doctors');
 
-        });
-    });
-});
+//         });
+//     });
+// });
 
 
 
@@ -747,7 +771,7 @@ Route::get('/change/{lang?}', 'SiteController@changeLanguage')->name('lang');
 
 //Home
 Route::get('/login', 'SiteController@login')->name('login');
-Route::get('/', 'SiteController@index')->name('home');
+// Route::get('/', 'SiteController@index')->name('home');
 Route::get('/{slug}', 'SiteController@pages')->name('pages');
 
 Route::get('placeholder-image/{size}', 'SiteController@placeholderImage')->name('placeholderImage');
@@ -765,3 +789,8 @@ Route::get('all/sector/{id}', 'SiteController@getsectorAll')->name('sector.video
 
 //Doctors
 Route::get('doctors/sector/{id}', 'SiteController@getsectorallDoctors')->name('sector.videos.search');
+
+if (env('FORCE_HTTPS', true)) { // Default value should be false for local server
+    //            url()->forceSchema('https');
+        URL::forceScheme('https');
+    }

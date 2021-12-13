@@ -26,7 +26,7 @@
                                     </td>
                                     <td data-label="@lang('Name')">{{ $item->name }}</td>
                                     <td data-label="@lang('Action')">
-                                        <a href="#" class="icon-btn  updateBtn" data-route="{{ route('admin.sector.update',$item->id) }}" data-resourse="{{$item}}" data-toggle="modal" data-target="#updateBtn" data-image="{{ getImage(imagePath()['sector']['path'].'/'. $item->image)}}"><i class="la la-pencil-alt"></i></a>
+                                        <a href="{{ route('admin.category.detail',$item->id) }}" class="icon-btn  updateBtn" data-resourse="{{$item}}" ><i class="la la-pencil-alt"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -65,15 +65,15 @@
                         <div class="image-upload mt-2">
                             <div class="thumb">
                                 <div class="avatar-preview">
-                                    <div class="profilePicPreview" style="background-image: url({{ getImage('',imagePath()['sector']['size']) }})">
+                                    <div class="profilePicPreview" >
                                         <button type="button" class="remove-image"><i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
                                 <div class="avatar-edit">
                                     <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg">
-                                    <label for="profilePicUpload1" class="bg--success"> @lang('image')</label>
+                                    <label for="profilePicUpload1" class="bg--success"> @lang('Select Icon')</label>
                                     <small class="mt-2 text-facebook">@lang('Supported files'): <b>@lang('jpeg, jpg, png')</b>.
-                                    @lang('Image Will be resized to'): <b>{{imagePath()['sector']['size']}}</b> @lang('px').
+                                    <!-- @lang('Image Will be resized to'): <b>{{imagePath()['sector']['size']}}</b> @lang('px'). -->
 
                                     </small>
                                 </div>
@@ -145,7 +145,7 @@
 </div>
 
 @push('breadcrumb-plugins')
-    <a href="javascript:void(0)" class="btn btn-sm btn--primary box--shadow1 text--small addBtn"><i class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
+    <a href="{{route('admin.category.new')}}" class="btn btn-sm btn--primary box--shadow1 text--small addBtn"><i class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
 @endpush
 @endsection
 
@@ -155,10 +155,10 @@
     (function ($) {
         'use strict';
 
-        $('.addBtn').on('click', function () {
-            var modal = $('#addModal');
-            modal.modal('show');
-        });
+        // $('.addBtn').on('click', function () {
+        //     var modal = $('#addModal');
+        //     modal.modal('show');
+        // });
 
         $('.updateBtn').on('click', function () {
             var modal = $('#updateBtn');

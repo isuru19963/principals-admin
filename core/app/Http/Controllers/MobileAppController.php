@@ -14,6 +14,7 @@ use App\PrescriptionImage;
 use App\Sector;
 use App\PostsModel;
 use App\Users;
+use App\ChatMessagesModel;
 use App\CoachAvailabilityModel;
 use App\ScheduledAppointments;
 use App\PushNotificationsTokenModel;
@@ -822,14 +823,25 @@ public function getLibraryPostBySearch(Request $request)
 {
     $search_text = $request->searchText;
 
-    $library = PostsModel::where('posts.post_code',$request->post_code)
-    ->where('posts.status',1)
-    ->orWhere("posts.title","like","%".$search_text."%")
+    $library = PostsModel::Where("posts.title","like","%".$search_text."%")
     ->orWhere("sectors.name","like","%".$search_text."%")
+    ->where('posts.status',1)
     ->join('sectors','sectors.id','posts.category')
     ->select('posts.*','sectors.name','sectors.details','sectors.image')
     ->get();
    return response()->json($library);
+
+}
+
+public function getLibraryPostDailyDose(Request $request)
+{
+
+    $appointments = PostsModel::where('posts.is_daily_dose',1)
+    ->join('sectors','sectors.id','posts.category')
+    ->select('posts.*','sectors.name','sectors.details','sectors.image')
+    ->take($request->limit)
+    ->get();
+   return response()->json($appointments);
 
 }
 
@@ -889,6 +901,29 @@ public function getCoachAvailabilityList(Request $request)
    return response()->json($users);
 
 }
+public function getCoachAvailabilityAppt(Request $request)
+{
+
+
+   $alreadyBooked=false;
+for($i = 0; $i < sizeof($request->slot); $i++){
+    $users =  $appointment = ScheduledAppointments::where('scheduled_appointments.coach_code',$request->coach_code)->Where('appt_date','=',$request->date)
+    ->where('time_slot','=',$request->slot[$i])
+    ->first();
+    if($users){
+        $alreadyBooked=true;
+        
+    }
+    
+}
+return response()->json([
+    'message' =>$alreadyBooked?'unsuccess':'success',
+]);
+   
+  
+  
+
+}
 public function getAppointmentTimeSlots(Request $request)
 {
     $user = CoachAvailabilityModel::select('slots')
@@ -920,6 +955,126 @@ public function getCoachList(Request $request)
     ->where('users.status',1)
     ->get();
    return response()->json($users);
+
+}
+public function getPrincipalList(Request $request)
+{
+
+    $users = Users::where('users.user_type','principal')
+    ->where('users.status',1)
+    ->get();
+   return response()->json($users);
+
+}
+public function updateUserDetails(Request $request)
+{
+    $user = Users::where('user_code',$request->user_code)->first();
+    $user->first_name = $request->first_name;
+    $user->last_name = $request->last_name;
+    $user->title = $request->title;
+    $user->school = $request->school;
+    $user->mobile_no = $request->mobile_no;
+    $user->email = $request->email;
+    $user->district = $request->district;
+    $user->save();
+    if(true){
+        return response()->json([
+            'message' =>'success',
+            'data' =>$user,
+        ]);
+    
+    }
+    else{
+        return response()->json([
+            'message' =>'error',
+        ]);
+    
+    }
+
+}
+
+public function savePrincipalAppoinment(Request $request)
+{
+    $user = new ScheduledAppointments();
+    $user->appointments_code =  Uuid::generate(4);
+    $user->coach_code = $request->coach_code;
+    $user->principal_code = $request->principal_code;
+    $user->appt_date = $request->appt_date;
+    $user->time_slot = $request->time_slot;
+    $user->duration = $request->duration;
+    $user->status = 1;
+    $user->topic = $request->topic;
+    $user->message = $request->message;
+    $user->save();
+    if($user){
+        return response()->json([
+            'message' =>'success',
+        ]);
+    
+    }
+    else{
+        return response()->json([
+            'message' =>'unsuccess',
+        ]);
+    
+    }
+
+}
+
+public function getChatMessage(Request $request)
+{
+
+    $chats = ChatMessagesModel::where('chat_messages.principal_code',$request->coach_code)
+    ->where('chat_messages.principal_code',$request->principal_code)
+    ->first();
+    if($chats){
+        return response()->json([
+            'message' =>'success',
+            'chat' => $chats
+        ]);
+    }
+    else{
+        $chatMessage = new ChatMessagesModel();
+        $chatMessage->chat_code =  Uuid::generate(4);
+        $chatMessage->coach_code = $request->coach_code;
+        $chatMessage->principal_code = $request->principal_code;
+        $chatMessage->chat_hostory = json_encode($request->chat_hostory);
+        $chatMessage->status = 1;
+        $chatMessage->save();
+        if($chatMessage){
+            return response()->json([
+                'message' =>'success',
+            ]);
+        
+        }
+        else{
+            return response()->json([
+                'message' =>'unsuccess',
+            ]);
+        
+        }
+    }
+
+
+}
+public function UpdateChatMessage(Request $request)
+{
+    $chatMessage = ChatMessagesModel::where('chat_messages.chat_code',$request->chat_code)->first();
+    $chatMessage->chat_hostory = $request->chat_hostory;
+    $chatMessage->save();
+    if(true){
+        return response()->json([
+            'message' =>'success',
+            'data' =>$chatMessage,
+        ]);
+    
+    }
+    else{
+        return response()->json([
+            'message' =>'error',
+        ]);
+    
+    }
 
 }
 

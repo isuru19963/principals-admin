@@ -678,6 +678,10 @@ function imagePath()
         'path' => 'assets/coach/images/profile',
         'size' => '255x200',
     ];
+    $data['author'] = [
+        'path' => 'assets/author/images/profile',
+        'size' => '255x200',
+    ];
     $data['principal'] = [
         'path' => 'assets/principal/images/profile',
         'size' => '255x200',

@@ -16,10 +16,12 @@ use App\DrArticles;
 use App\DrYotube;
 use App\Gallery;
 use App\PostsModel;
+use App\Users;
 use Illuminate\Support\Facades\Hash;
 use Uuid;
 use Illuminate\Http\Request;
 use Vimeo\Laravel\Facades\Vimeo;
+use Illuminate\Routing\UrlGenerator;
 
 class PostController extends Controller
 {
@@ -29,11 +31,12 @@ class PostController extends Controller
     $sector = Sector::all();
     $vimeo= Vimeo::request('/me/videos', ['per_page' => 10], 'GET');
     $vimeoData =$vimeo['body']['data'];
+       $authors = Users::Where('user_type','=','author')->latest()->paginate(getPaginate());
     // return $vimeoData;
-    return view('admin.Posts.new_post', compact('page_title','sector','vimeoData'));
+    return view('admin.Posts.new_post', compact('page_title','sector','vimeoData','authors'));
 }
 public function postsAll(){
-    
+
     $page_title = 'Manage Articles';
         $empty_message = 'No post found';
         $articles = PostsModel::Select('posts.*','sectors.name')->join('sectors','sectors.id','posts.category')->latest()->paginate(getPaginate());
@@ -44,7 +47,7 @@ public function uploadPostsImage(Request $request)
 {
     $image = $request->file('file');
     $imageName = $image->getClientOriginalName();
-    $done=$image->move('assets/articles', $imageName);
+    $done=$image->move('assets/posts/documents', $imageName);
     return response()->json(['successss' => $imageName]);
 
     // try{
@@ -72,8 +75,11 @@ public function postsRemove($id){
 
 }
 public function postsStore(Request $request){
+
+//    return $request;
+
     $this->validate($request, [
-        'title' => 'required|max:190',
+        'title' => 'required|max:190'
     ]);
 
     $subject_image='default.jpg';
@@ -97,21 +103,26 @@ public function postsStore(Request $request){
     //     'article_image' => $request->selectedDocument,
     //     'category' => $request->category,
     // ]);
+
+    $author = Users::find($request->author_id);
+
     $post = new PostsModel();
     $post->post_code = Uuid::generate(4);
     $post->title =  $request->title;
     $post->description =  $request->description;
     $post->category = $request->category;
     $post->post_image =  $subject_image;
-    $post->document_name =  $request->document;
+    $post->document_name =  $request->selectedDocument[0]??null;
     $post->video_url =  $request->vimeo_url;
-    $post->author_name =  $request->author_name;
+    $post->author_name =  $author->first_name . ' '.$author->last_name;
+    $post->author_id =  $request->author_id;
     $post->author_description  =  $request->author_description;
     $post->additional_data =  '{}';
     $post->added_by_user =  1;
     $post->status =  $request->status=='on'?1:0;
+    $post->is_daily_dose =  $request->is_daily_dose=='on'?1:0;
     $post->save();
-    $notify[] = ['success', 'Post has been added'];
+    $notify[] = ['success', 'Article has been added'];
     return back()->withNotify($notify);
 
 }
@@ -122,8 +133,9 @@ public function detail($id)
     $sector = Sector::latest()->get();
     $vimeo= Vimeo::request('/me/videos', ['per_page' => 10], 'GET');
     $vimeoData =$vimeo['body']['data'];
+    $authors = Users::Where('user_type','=','author')->latest()->paginate(getPaginate());
 
-    return view('admin.posts.detail', compact('page_title', 'article','sector','vimeoData'));
+    return view('admin.posts.detail', compact('page_title', 'article','sector','vimeoData','authors'));
 }
 public function postsUpdate(Request $request, $id)
 {
@@ -149,7 +161,9 @@ public function postsUpdate(Request $request, $id)
     //     'article_image' => $request->selectedDocument,
     //     'category' => $request->category,
     // ]);
- 
+
+    $author = Users::find($request->author_id);
+
     $post = PostsModel::findOrFail($id);
     $post->title =  $request->title;
     $post->description =  $request->description;
@@ -157,15 +171,27 @@ public function postsUpdate(Request $request, $id)
     if($subject_image!=''){
         $post->post_image =  $subject_image;
     }
-   
+
     $post->document_name =  $request->document;
     $post->video_url =  $request->vimeo_url;
-    $post->author_name =  $request->author_name;
+    $post->author_name =  $author->first_name . ' '.$author->last_name;
+    $post->author_id =  $request->author_id;
     $post->author_description  =  $request->author_description;
     $post->status =  $request->status=='on'?1:0;
+    $post->is_daily_dose =  $request->is_daily_dose=='on'?1:0;
     $post->save();
     $notify[] = ['success', 'Post has been Updated'];
     return back()->withNotify($notify);
+}
+
+public function postDocDownload($document_name)
+{
+    $url='https://localhost/principalsadmin/assets/posts/documents/'.$document_name;
+    $headers = ['Content-Type: application/pdf'];
+    $newName = "demo.pdf";
+
+    return response()->download($url,$newName,$headers);
+
 }
 /////End Articles
 

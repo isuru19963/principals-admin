@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Appointment;
+use App\ScheduledAppointments;
 use App\Doctor;
+use App\Appointment;
 use App\GeneralSetting;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -112,9 +113,15 @@ class AppointmentController extends Controller
 
     public function allAppointment(){
         $page_title = 'New Appointments';
-        $appointments = Appointment::where('try',1)->where('is_complete',0)->where('d_status',0)->whereHas('doctor', function ($query) {
-            $query->where('status',1);
-       })->latest()->paginate(getPaginate());
+    //     $appointments = Appointment::where('try',1)->where('is_complete',0)->where('d_status',0)->whereHas('doctor', function ($query) {
+    //         $query->where('status',1);
+    //    })->latest()->paginate(getPaginate());
+       $appointments = ScheduledAppointments::where('scheduled_appointments.status',1)
+       ->join('users as coach','coach.user_code','scheduled_appointments.coach_code') 
+       ->join('users as principal','principal.user_code','scheduled_appointments.principal_code') 
+       ->select('scheduled_appointments.*','coach.first_name as coach_first_name','coach.last_name as coach_last_name','principal.first_name as principal_first_name','principal.last_name as principal_last_name','principal.profile_image')
+
+       ->latest()->paginate(getPaginate());
         $empty_message = 'No Appointment Found';
         return view('admin.appointment.appointment',compact('page_title','appointments','empty_message'));
     }

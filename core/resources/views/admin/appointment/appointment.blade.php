@@ -11,60 +11,43 @@
                         <table class="default-data-table table">
                             <thead>
                                 <tr>
-                                    <th scope="col">@lang('Principal Image')</th>
-                                    <th scope="col">@lang('Principal Name')</th>
+                                    <th scope="col">@lang('Principal ')</th>
                                     <th scope="col">@lang('Coach Name')</th>
-                                    <th scope="col">@lang('Email')</th>
+                                    <th scope="col">@lang('Status')</th>
                                     <th scope="col">@lang('Booking Date')</th>
                                     <th scope="col">@lang('Time Slot')</th>
-                                    {{-- <th scope="col">@lang('Payment Status')</th> --}}
-                                    {{-- <th scope="col">@lang('Doctor')</th> --}}
-                                    <th scope="col">@lang('Action')</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 @foreach($appointments as $item)
                                     <tr>
-                                        <td data-label="@lang('Name')">{{ __($item->name) }}</td>
-                                        <td data-label="@lang('Email')">{{ $item->email }}</td>
+                                    <td data-label="@lang('Coach')">
+                                        <div class="user">
+                                            <div class="thumb"><img src="{{ getImage(imagePath()['principal']['path'].'/'. $item->profile_image,imagePath()['principal']['size'])}}" alt="@lang('image')"></div>
+                                            <span class="name">{{ _($item->principal_first_name ) }} {{ _($item->principal_last_name ) }}</span>
+                                        </div>
+                                    </td>
+                                        <td data-label="@lang('Email')">{{ _($item->coach_first_name ) }} {{ _($item->coach_last_name ) }}</td>
 
-                                        @if ($item->staff)
-                                            <td data-label="@lang('Added By')">{{ __($item->relationStaff->name) }} <span class="text--small badge font-weight-normal badge--success">@lang('Staff')</span></td>
-                                        @elseif($item->assistant)
-                                            <td data-label="@lang('Added By')">{{ __($item->relationAssistant->name) }} <span class="text--small badge font-weight-normal badge--success">@lang('Assistant')(</span></td>
-                                        @elseif($item->entry_doctor)
-                                            <td data-label="@lang('Added By')">{{ __($item->doctor->name) }} <span class="text--small badge font-weight-normal badge--success">@lang('Doctor')</span></td>
-                                        @elseif($item->admin)
-                                            <td data-label="@lang('Added By')">{{ __($item->relationAdmin->name) }} <span class="text--small badge font-weight-normal badge--success">@lang('Admin')</span></td>
-                                        @elseif($item->site)
-                                            <td data-label="@lang('Added By')">@lang('From Site') <span class="text--small badge font-weight-normal badge--success">@lang('Site')</span></td>
-                                        @else
-                                            <td data-label="@lang('Added By')"></td>
+                                       
+
+                                        @if ($item->status == 0)
+                                            <td data-label="@lang('Payment Status')"><span class="text--small badge font-weight-normal badge--warning">@lang('Pending')</span></td>
+                                        @elseif ($item->status == 1)
+                                            <td data-label="@lang('Payment Status')"><span class="text--small badge font-weight-normal badge--success">@lang('Accepted')</span></td>
+                                        @elseif ($item->status == 2)
+                                            <td data-label="@lang('Payment Status')"><span class="text--small badge font-weight-normal badge--danger">@lang('Rejected')</span></td>
                                         @endif
-
+                                       
+                                        <td data-label="@lang('Doctor')">{{ $item->appt_date }}</td>
+                                        <td data-label="@lang('Doctor')">{{ $item->time_slot }}</td>
+                                        
+                                  
                                         <td data-label="@lang('Booking Date')">{{ __($item->booking_date) }}</td>
                                         <td data-label="@lang('Time Or Serial no')">{{ __($item->time_serial) }}</td>
-                                        @if ($item->p_status == 0)
-                                            <td data-label="@lang('Payment Status')"><span class="text--small badge font-weight-normal badge--danger">@lang('Pay in cash')</span></td>
-                                        @elseif ($item->p_status == 1)
-                                            <td data-label="@lang('Payment Status')"><span class="text--small badge font-weight-normal badge--success">@lang('Paid')</span></td>
-                                        @elseif ($item->p_status == 2)
-                                            <td data-label="@lang('Payment Status')"><span class="text--small badge font-weight-normal badge--warning">@lang('Pending')</span></td>
-                                        @endif
-                                        <td data-label="@lang('Doctor')">{{ $item->doctor->name }}</td>
-                                        <td data-label="@lang('Action')">
-                                            <a href="" data-route="{{ route('admin.appointments.view',$item->id) }}" data-resourse="{{ $item }}" data-toggle="modal" data-target="#viewModal"
-                                                class="icon-btn bg--success ml-1 viewBtn">
-                                            <i class="la la-eye"></i>
-                                            </a>
-                                            @if ($item->p_status == 0)
-                                                <a href="" data-route="{{ route('admin.appointments.remove',$item->id) }}" data-toggle="modal" data-target="#removeModal"
-                                                    class="icon-btn bg--danger ml-1 removeBtn">
-                                                <i class="la la-trash"></i>
-                                                </a>
-                                            @endif
-                                        </td>
+                                      
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>

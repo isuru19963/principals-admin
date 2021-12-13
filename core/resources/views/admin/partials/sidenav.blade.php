@@ -24,19 +24,15 @@
                 <li class="sidebar-menu-item {{menuActive('admin.sector*')}}">
                     <a href="{{route('admin.sector')}}" class="nav-link ">
                         <i class=" menu-icon fas fa-list"></i>
-                        <span class="menu-title">@lang('Manage Categories')</span>
+                        <span class="menu-title">@lang('Categories')</span>
                     </a>
                 </li>
 
                 <li class="sidebar-menu-item sidebar-dropdown">
-                    <a href="javascript:void(0)" class="{{menuActive('admin.doctors*',3)}}">
+                    <a href="javascript:void(0)" class="{{menuActive('admin.coaches*',3)}}">
                         <i class="menu-icon fas fa-book-open"></i>
-                        <span class="menu-title">@lang('Manage Library')</span>
-                        @if($banned_doctors_count > 0 || $email_unverified_doctors_count > 0 || $sms_unverified_doctors_count > 0)
-                            <span class="menu-badge pill bg--primary ml-auto">
-                                <i class="fa fa-exclamation"></i>
-                            </span>
-                        @endif
+                        <span class="menu-title">@lang('Library')</span>
+                        
                     </a>
 
                     <div class="sidebar-submenu {{menuActive('admin.coaches*',2)}}">
@@ -54,107 +50,21 @@
                                 </a>
                             </li>
 
-                            {{-- <li class="sidebar-menu-item {{menuActive('admin.posts.active')}} ">
-                                <a href="{{route('admin.posts.active')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Active posts')</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item {{menuActive('admin.coaches.banned')}} ">
-                                <a href="{{route('admin.coaches.banned')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Banned Coaches')</span>
-                                    @if($banned_doctors_count)
-                                        <span class="menu-badge pill bg--primary ml-auto">{{$banned_doctors_count}}</span>
-                                    @endif
-                                </a>
-                            </li> --}}
+                         
 
-                            {{-- <li class="sidebar-menu-item  {{menuActive('admin.coaches.emailUnverified')}}">
-                                <a href="{{route('admin.coaches.emailUnverified')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Email Unverified')</span>
 
-                                    @if($email_unverified_doctors_count)
-                                        <span
-                                            class="menu-badge pill bg--primary ml-auto">{{$email_unverified_doctors_count}}</span>
-                                    @endif
-                                </a>
-                            </li>
-
-                            <li class="sidebar-menu-item {{menuActive('admin.coaches.smsUnverified')}}">
-                                <a href="{{route('admin.coaches.smsUnverified')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('SMS Unverified')</span>
-                                    @if($sms_unverified_doctors_count)
-                                        <span
-                                            class="menu-badge pill bg--primary ml-auto">{{$sms_unverified_doctors_count}}</span>
-                                    @endif
-                                </a>
-                            </li> --}}
-
-                            {{-- <li class="sidebar-menu-item {{menuActive('admin.coaches.login.history')}}">
-                                <a href="{{route('admin.coaches.login.history')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Login History')</span>
-                                </a>
-                            </li> --}}
-
-                            {{-- <li class="sidebar-menu-item {{menuActive('admin.doctors.email.all')}}">
-                                <a href="{{route('admin.doctors.email.all')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Send Email')</span>
-                                </a>
-                            </li> --}}
+                            
 
                         </ul>
                     </div>
                 </li>
 
-                {{-- <li class="sidebar-menu-item {{menuActive('admin.gallery*')}}">
-                    <a href="{{route('admin.gallery')}}" class="nav-link ">
-                        <i class=" menu-icon fas fa-book"></i>
-                        <span class="menu-title">@lang('Manage Gallery')</span>
-                    </a>
-                </li> --}}
-
-                {{-- <li class="sidebar-menu-item {{menuActive('admin.youtube*')}}">
-                    <a href="{{route('admin.youtube')}}" class="nav-link ">
-                        <i class="menu-icon fab fa-youtube"></i>
-                        <span class="menu-title">@lang('Vimeo Videos')</span>
-                    </a>
-                </li> --}}
-
-                {{-- <li class="sidebar-menu-item {{menuActive('admin.disease*')}}">
-                    <a href="{{route('admin.disease')}}" class="nav-link ">
-                        <i class="menu-icon fas fa-tooth"></i>
-                        <span class="menu-title">@lang('Manage Diseases')</span>
-                    </a>
-                </li> --}}
-
-                {{-- <li class="sidebar-menu-item {{menuActive('admin.location*')}}">
-                    <a href="{{route('admin.location')}}" class="nav-link ">
-                        <i class="menu-icon fas fa-map-marker-alt"></i>
-                        <span class="menu-title">@lang('Manage Locations')</span>
-                    </a>
-                </li> --}}
-
-                {{-- <li class="sidebar-menu-item {{menuActive('admin.books*')}}">
-                    <a href="{{route('admin.books')}}" class="nav-link ">
-                        <i class="menu-icon fas fa-book"></i>
-                        <span class="menu-title">@lang('Manage Books')</span>
-                    </a>
-                </li> --}}
 
                 <li class="sidebar-menu-item sidebar-dropdown">
-                    <a href="javascript:void(0)" class="{{menuActive('admin.doctors*',3)}}">
+                    <a href="javascript:void(0)" class="{{menuActive('admin.coaches*',3)}}">
                         <i class="menu-icon fas fa-chalkboard-teacher"></i>
-                        <span class="menu-title">@lang('Manage Coaches')</span>
-                        @if($banned_doctors_count > 0 || $email_unverified_doctors_count > 0 || $sms_unverified_doctors_count > 0)
-                            <span class="menu-badge pill bg--primary ml-auto">
-                                <i class="fa fa-exclamation"></i>
-                            </span>
-                        @endif
+                        <span class="menu-title">@lang('Coaches')</span>
+                       
                     </a>
 
                     <div class="sidebar-submenu {{menuActive('admin.coaches*',2)}}">
@@ -173,58 +83,7 @@
                                 </a>
                             </li>
 
-                            <!-- <li class="sidebar-menu-item {{menuActive('admin.coaches.active')}} ">
-                                <a href="{{route('admin.coaches.active')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Active Coaches')</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item {{menuActive('admin.coaches.banned')}} ">
-                                <a href="{{route('admin.coaches.banned')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Banned Coaches')</span>
-                                    @if($banned_doctors_count)
-                                        <span class="menu-badge pill bg--primary ml-auto">{{$banned_doctors_count}}</span>
-                                    @endif
-                                </a>
-                            </li> -->
-
-                            {{-- <li class="sidebar-menu-item  {{menuActive('admin.coaches.emailUnverified')}}">
-                                <a href="{{route('admin.coaches.emailUnverified')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Email Unverified')</span>
-
-                                    @if($email_unverified_doctors_count)
-                                        <span
-                                            class="menu-badge pill bg--primary ml-auto">{{$email_unverified_doctors_count}}</span>
-                                    @endif
-                                </a>
-                            </li>
-
-                            <li class="sidebar-menu-item {{menuActive('admin.coaches.smsUnverified')}}">
-                                <a href="{{route('admin.coaches.smsUnverified')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('SMS Unverified')</span>
-                                    @if($sms_unverified_doctors_count)
-                                        <span
-                                            class="menu-badge pill bg--primary ml-auto">{{$sms_unverified_doctors_count}}</span>
-                                    @endif
-                                </a>
-                            </li> --}}
-
-                            {{-- <li class="sidebar-menu-item {{menuActive('admin.coaches.login.history')}}">
-                                <a href="{{route('admin.coaches.login.history')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Login History')</span>
-                                </a>
-                            </li> --}}
-
-                            {{-- <li class="sidebar-menu-item {{menuActive('admin.doctors.email.all')}}">
-                                <a href="{{route('admin.doctors.email.all')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Send Email')</span>
-                                </a>
-                            </li> --}}
+                            
 
                         </ul>
                     </div>
@@ -237,12 +96,8 @@
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.principals*',3)}}">
                         <i class="menu-icon fas fa-male"></i>
-                        <span class="menu-title">@lang('Manage Principals')</span>
-                        @if($banned_staff_count > 0 || $email_unverified_staff_count > 0 || $sms_unverified_staff_count > 0)
-                            <span class="menu-badge pill bg--primary ml-auto">
-                                <i class="fa fa-exclamation"></i>
-                            </span>
-                        @endif
+                        <span class="menu-title">@lang('Principals')</span>
+                        
                     </a>
 
                     <div class="sidebar-submenu {{menuActive('admin.principals*',2)}}">
@@ -265,36 +120,84 @@
                     </div>
                 </li>
 
+                {{-- Author --}}
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="{{menuActive('admin.author*',3)}}">
+                        <i class="menu-icon fas fa-pen"></i>
+                        <span class="menu-title">@lang('Author')</span>
+                      
+                    </a>
+
+                    <div class="sidebar-submenu {{menuActive('admin.author*',2)}}">
+                        <ul>
+                            <li class="sidebar-menu-item {{menuActive('admin.author.new')}}">
+                                <a href="{{route('admin.author.new')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Add New Author')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{menuActive('admin.author.all')}}">
+                                <a href="{{route('admin.author.all')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('All Authors')</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </li>
+
+
+                {{-- Video --}}
+                <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="{{menuActive('admin.my_video*',3)}}">
+                        <i class="menu-icon fas fa-video"></i>
+                        <span class="menu-title">@lang('My Video')</span>
+
+                    </a>
+
+                    <div class="sidebar-submenu {{menuActive('admin.my_video*',2)}}">
+                        <ul>
+                            <li class="sidebar-menu-item {{menuActive('admin.my_video.new')}}">
+                                <a href="{{route('admin.my_video.new')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Add New Video')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{menuActive('admin.my_video.all')}}">
+                                <a href="{{route('admin.my_video.all')}}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('All Videos')</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </li>
+
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.appointments*',3)}}">
                         <i class="menu-icon fas fa-handshake"></i>
                         <span class="menu-title">@lang('Appointments') </span>
-                        @if(0 < $new_appointments_count)
-                            <span class="menu-badge pill bg--primary ml-auto">
-                                <i class="fa fa-exclamation"></i>
-                            </span>
-                        @endif
+                      
                     </a>
                     <div class="sidebar-submenu {{menuActive('admin.appointments*',2)}} ">
                         <ul>
 
-                            {{-- <li class="sidebar-menu-item {{menuActive('admin.appointments.create')}} ">
-                                <a href="{{route('admin.appointments.create')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Create')</span>
-                                </a>
-                            </li> --}}
+                            
                             <li class="sidebar-menu-item {{menuActive('admin.appointments.all')}} ">
                                 <a href="{{route('admin.appointments.all')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('New')</span>
+                                    <span class="menu-title">@lang('All Appointments')</span>
                                     @if($new_appointments_count)
                                         <span
                                             class="menu-badge pill bg--primary ml-auto">{{$new_appointments_count}}</span>
                                     @endif
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item {{menuActive('admin.appointments.done')}} ">
+                            <!-- <li class="sidebar-menu-item {{menuActive('admin.appointments.done')}} ">
                                 <a href="{{route('admin.appointments.done')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Done')</span>
@@ -305,7 +208,7 @@
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Trashed')</span>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </li>

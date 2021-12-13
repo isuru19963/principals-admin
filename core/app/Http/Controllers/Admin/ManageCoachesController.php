@@ -588,6 +588,7 @@ public function youtubeStore(Request $request){
                 $size = imagePath()['coach']['size'];
 
                 $coach_image = uploadImage($request->image, $location , $size);
+             
 
             }catch(\Exception $exp) {
                 return back()->withNotify(['error', 'Could not upload the image.']);
@@ -637,7 +638,6 @@ public function youtubeStore(Request $request){
     {
         $page_title = 'Coach Detail';
         $doctor = Users::findOrFail($id);
-        $assistants = Assistant::where('status',1)->latest()->get();
         $sectors = Sector::latest()->get();
         $sectors = Http::get('https://gist.githubusercontent.com/mshafrir/2646763/raw/8b0dbb93521f5d6889502305335104218454c2bf/states_titlecase.json');
         $locations = Location::latest()->get();
@@ -646,7 +646,7 @@ public function youtubeStore(Request $request){
         $appointment_done = Appointment::where('doctor_id',$doctor->id)->where('try',1)->where('is_complete',1)->count();
         $appointment_trashed = Appointment::where('doctor_id',$doctor->id)->where('d_status',1)->count();
         $total_appointment = Appointment::where('doctor_id',$doctor->id)->where('try',1)->count();
-        return view('admin.coaches.detail', compact('page_title', 'doctor','assistants','sectors','locations','total_online_earn','total_cash_earn','appointment_done','total_appointment','appointment_trashed'));
+        return view('admin.coaches.detail', compact('page_title', 'doctor','sectors','locations','total_online_earn','total_cash_earn','appointment_done','total_appointment','appointment_trashed'));
     }
 
     public function update(Request $request, $id)
@@ -666,7 +666,7 @@ public function youtubeStore(Request $request){
         $coach->email =  $request->email;
         $coach->mobile_no =  $request->mobile;
         $coach->bio =$request->about;
-        $coach->bio =$request->status;
+        $coach->status =$request->status;
         $coach->state =$request->state;
         $coach->district =$request->district;
         $coach->save();

@@ -17,12 +17,12 @@ $states = json_decode($sectors);
                                     <div class="image-upload mt-2">
                                         <div class="thumb">
                                             <div class="avatar-preview">
-                                                <div class="profilePicPreview" style="background-image: url({{ getImage('/',imagePath()['coach']['size']) }})">
-                                                    <button type="button" class="remove-image"><i class="fa fa-times"></i></button>
+                                                <div class="profilePicPreview" id="profilePicPreview" hidden style="background-image: url({{ getImage('/',imagePath()['coach']['size']) }})">
+                                                    <button type="button" class="remove-image"  onclick=" $('#profilePicPreview').prop('hidden',true)"><i class="fa fa-times"></i></button>
                                                 </div>
                                             </div>
                                             <div class="avatar-edit">
-                                                <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg" required>
+                                                <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg" onchange="$('#profilePicPreview').prop('hidden',false)" required>
                                                 <label for="profilePicUpload1" class="bg--success"> @lang('image')</label>
                                                 <small class="mt-2 text-facebook">@lang('Supported files'): <b>@lang('jpeg, jpg, png')</b>. @lang('Image Will be resized to'): <b>{{imagePath()['coach']['size']}}</b> @lang('px').</small>
                                             </div>
